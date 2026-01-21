@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Importar CSV - Sistema de Patrimônio</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="app-shell">
+    <%- include('../partials/header', { activePage: 'importar', username }) %>
+
+    <main class="content-area">
+        <section class="panel">
+            <div class="panel-heading">Rotina de importação</div>
+            <div class="panel-body">
+                <div class="page-header">
+                    <div>
+                        <div class="section-title">Importar equipamentos via CSV</div>
+                        <p class="section-subtitle">Use o modelo padrão para manter o layout homogêneo em todas as páginas.</p>
+                    </div>
+                    <a href="/equipamentos" class="btn btn-secondary">← Voltar para lista</a>
+                </div>
+
+                <% if (message) { %>
+                    <div class="alert alert-<%= messageType %>" style="margin-top: 18px;">
+                        <%= message %>
+                    </div>
+                <% } %>
+            </div>
+        </section>
+
+        <% if (resultado) { %>
+            <section class="panel">
+                <div class="panel-heading">Resumo da importação</div>
+                <div class="panel-body">
+                    <div class="resultado-grid">
+                        <div class="resultado-card">
+                            <h4>Total de linhas</h4>
+                            <span style="color:#6c7a96;"><%= resultado.total %></span>
+                        </div>
+                        <div class="resultado-card">
+                            <h4>Importados</h4>
+                            <span style="color: var(--success);"><%= resultado.sucessos %></span>
+                        </div>
+                        <div class="resultado-card">
+                            <h4>Duplicados</h4>
+                            <span style="color: var(--warning);"><%= resultado.duplicados %></span>
+                        </div>
+                        <div class="resultado-card">
+                            <h4>Erros</h4>
+                            <span style="color: var(--danger);"><%= resultado.erros %></span>
+                        </div>
+                    </div>
+
+                    <% if (resultado.detalhesErros && resultado.detalhesErros.length > 0) { %>
+                        <div class="erros-lista">
+                            <strong>Detalhes (primeiros 10):</strong>
+                            <ul>
+                                <% resultado.detalhesErros.forEach(erro => { %>
+                                    <li><%= erro %></li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                    <% } %>
+
+                    <div class="header-actions" style="margin-top: 24px; justify-content: center;">
+                        <a href="/equipamentos" class="btn btn-primary">Ver equipamentos importados</a>
+                        <a href="/equipamentos/importar" class="btn btn-secondary">Importar outro arquivo</a>
+                    </div>
+                </div>
+            </section>
+        <% } else { %>
+            <section class="panel">
+                <div class="panel-heading">Passo a passo</div>
+                <div class="panel-body">
+                    <div class="import-instructions">
+                        <strong>Checklist do arquivo:</strong>
+                        <ul>
+                            <li>Formato CSV com separador vírgula.</li>
+                            <li>Codificação em UTF-8.</li>
+                            <li>Campos obrigatórios: NI, TAG e Descrição.</li>
+                            <li>Campos opcionais: Sala, Local, Bloco, Empréstimo e Observações.</li>
+                            <li>Primeira linha deve conter o cabeçalho.</li>
+                        </ul>
+                        <div class="csv-example">
+                            <strong>Exemplo:</strong>
+<pre>NI,TAG,Descrição,Sala,Local,Bloco,Empréstimo,Observações
+"001","TAG001","Notebook Dell","101","Mesa 1","A","TI","Em bom estado"
+"002","TAG002","Monitor LG 24''","102","Mesa 2","A","Administrativo",""
+"003","TAG003","Mouse Logitech","101","Mesa 1","A","TI",""</pre>
+                        </div>
+                        <p><strong>Dica:</strong> exporte o inventário atual e utilize-o como modelo.</p>
+                    </div>
+
+                    <form action="/equipamentos/importar" method="POST" enctype="multipart/form-data" id="uploadForm" style="margin-top: 24px;">
+                        <div class="upload-area">
+                            <div class="file-input-wrapper">
+                                <input 
+                                    type="file"
+                                    name="csvFile"
+                                    id="csvFile"
+                                    accept=".csv"
+                                    required
+                                    onchange="updateFileName(this)"
+                                >
+                                <label for="csvFile" class="btn btn-primary">📁 Escolher arquivo</label>
+                            </div>
+                            <div id="selectedFile" class="selected-file" style="display:none;"></div>
+                            <p style="margin-top: 16px; color: var(--navy-500);">Arraste o arquivo ou clique para selecionar.</p>
+                        </div>
+
+                        <div style="text-align: center;">
+                            <button type="submit" class="btn btn-primary" style="padding: 14px 48px; font-size: 1rem;">
+                                🚀 Iniciar importação
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        <% } %>
+    </main>
+
+    <%- include('../partials/footer') %>
+
+    <script>
+        function updateFileName(input) {
+            const selectedFileDiv = document.getElementById('selectedFile');
+            if (input.files && input.files[0]) {
+                selectedFileDiv.textContent = '✓ Arquivo selecionado: ' + input.files[0].name;
+                selectedFileDiv.style.display = 'block';
+            } else {
+                selectedFileDiv.style.display = 'none';
+            }
+        }
+
+        const uploadArea = document.querySelector('.upload-area');
+        const fileInput = document.getElementById('csvFile');
+
+        if (uploadArea && fileInput) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, () => {
+                    uploadArea.classList.add('dragging');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, () => {
+                    uploadArea.classList.remove('dragging');
+                }, false);
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    updateFileName(fileInput);
+                }
+            }, false);
+        }
+
+        const uploadForm = document.getElementById('uploadForm');
+        if (uploadForm) {
+            uploadForm.addEventListener('submit', (e) => {
+                if (!fileInput.files || fileInput.files.length === 0) {
+                    e.preventDefault();
+                    alert('Por favor, selecione um arquivo CSV para importar.');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

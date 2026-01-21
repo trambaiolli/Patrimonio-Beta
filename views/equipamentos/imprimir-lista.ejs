@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Equipamentos - Sistema de Patrimônio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Barlow', 'Segoe UI', sans-serif;
+            background-color: #e4e9f5;
+            padding: 20px;
+            color: #1e2d3f;
+        }
+
+        .print-container {
+            background-color: #fdfefe;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(46, 64, 100, 0.08);
+            border: 1px solid rgba(127, 148, 183, 0.3);
+        }
+
+        .print-header {
+            border-bottom: 3px solid #3e5471;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .print-header h1 {
+            color: #2b3e55;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .print-header .subtitle {
+            color: #7b8ba8;
+            font-size: 16px;
+        }
+
+        .filter-info {
+            background-color: #eef2fb;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #7fb4f3;
+        }
+
+        .filter-info h3 {
+            color: #2b3e55;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .filter-item {
+            display: inline-block;
+            background-color: #fff;
+            padding: 5px 12px;
+            margin-right: 10px;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            border: 1px solid rgba(127, 148, 183, 0.4);
+            font-size: 13px;
+        }
+
+        .filter-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .filter-value {
+            color: #3498db;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #7b8ba8;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        table thead {
+            background-color: #3e5471;
+            color: white;
+        }
+
+        table th {
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            border: 1px solid #34495e;
+        }
+
+        table td {
+            padding: 10px 8px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f6f8fc;
+        }
+
+        table tbody tr:hover {
+            background-color: #e3e8f5;
+        }
+
+        .ni-col {
+            font-weight: bold;
+            color: #2c3e50;
+            white-space: nowrap;
+        }
+
+        .tag-col {
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            color: #7b8ba8;
+            font-style: italic;
+            background-color: #eef2fb;
+            border-radius: 5px;
+        }
+
+        .summary {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #eef2fb;
+            border-radius: 5px;
+            text-align: right;
+        }
+
+        .summary strong {
+            color: #2b3e55;
+            font-size: 14px;
+        }
+
+        .print-footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px solid #ddd;
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+        }
+
+        .no-print {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .no-print button {
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4c8ad9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            margin: 5px;
+            transition: all 0.3s;
+        }
+
+        .no-print button:hover {
+            background-color: #3b5d88;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .no-print .btn-close {
+            background-color: #95a5a6;
+        }
+
+        .no-print .btn-close:hover {
+            background-color: #7f8c8d;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+
+            .print-container {
+                box-shadow: none;
+                padding: 0;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            table {
+                font-size: 10px;
+            }
+
+            table th,
+            table td {
+                padding: 6px 4px;
+            }
+
+            .filter-info {
+                page-break-inside: avoid;
+            }
+
+            table tbody tr {
+                page-break-inside: avoid;
+            }
+
+            @page {
+                margin: 1cm;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .print-container {
+                padding: 15px;
+            }
+
+            table {
+                font-size: 11px;
+            }
+
+            .no-print {
+                position: static;
+                text-align: center;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-container">
+        <!-- Cabeçalho -->
+        <div class="print-header">
+            <h1>📊 Relatório de Equipamentos Patrimoniais</h1>
+            <div class="subtitle">Sistema de Gestão de Patrimônio</div>
+        </div>
+
+        <!-- Informações de Filtros -->
+        <% if (search || sala || empresa) { %>
+        <div class="filter-info">
+            <h3>🔍 Filtros Aplicados:</h3>
+            <% if (search) { %>
+                <div class="filter-item">
+                    <span class="filter-label">Busca:</span>
+                    <span class="filter-value">"<%= search %>"</span>
+                </div>
+            <% } %>
+            <% if (sala) { %>
+                <div class="filter-item">
+                    <span class="filter-label">Sala:</span>
+                    <span class="filter-value"><%= sala %></span>
+                </div>
+            <% } %>
+            <% if (empresa) { %>
+                <div class="filter-item">
+                    <span class="filter-label">Empresa:</span>
+                    <span class="filter-value"><%= empresa %></span>
+                </div>
+            <% } %>
+        </div>
+        <% } else { %>
+        <div class="filter-info">
+            <h3>📋 Relatório Completo (Sem Filtros)</h3>
+        </div>
+        <% } %>
+
+        <!-- Meta Informações -->
+        <div class="meta-info">
+            <div>
+                <strong>Data de Impressão:</strong> <%= dataImpressao %>
+            </div>
+            <div>
+                <strong>Total de Registros:</strong> <%= equipamentos.length %>
+            </div>
+        </div>
+
+        <!-- Tabela de Equipamentos -->
+        <% if (equipamentos.length === 0) { %>
+            <div class="empty-message">
+                <p>❌ Nenhum equipamento encontrado com os filtros aplicados.</p>
+            </div>
+        <% } else { %>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">NI</th>
+                            <th style="width: 100px;">TAG</th>
+                            <th>Descrição</th>
+                            <th style="width: 70px;">Sala</th>
+                            <th style="width: 100px;">Local</th>
+                            <th style="width: 80px;">Bloco</th>
+                            <th style="width: 120px;">Empréstimo</th>
+                            <th style="width: 150px;">Observações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% equipamentos.forEach(equip => { %>
+                        <tr>
+                            <td class="ni-col"><%= equip.ni %></td>
+                            <td class="tag-col"><%= equip.tag %></td>
+                            <td><%= equip.descricao %></td>
+                            <td><%= equip.sala || '-' %></td>
+                            <td><%= equip.local || '-' %></td>
+                            <td><%= equip.bloco || '-' %></td>
+                            <td><%= equip.emp || '-' %></td>
+                            <td><%= equip.obs ? equip.obs.substring(0, 100) + (equip.obs.length > 100 ? '...' : '') : '-' %></td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Resumo -->
+            <div class="summary">
+                <strong>Total de Equipamentos Listados: <%= equipamentos.length %></strong>
+            </div>
+        <% } %>
+
+        <!-- Rodapé -->
+        <div class="print-footer">
+            <p>Sistema de Gestão de Patrimônio &copy; 2025</p>
+            <p>Relatório gerado automaticamente em <%= dataImpressao %></p>
+        </div>
+    </div>
+
+    <!-- Botões de Ação (não aparecem na impressão) -->
+    <div class="no-print">
+        <button onclick="window.print()">🖨️ Imprimir</button>
+        <button onclick="window.close()" class="btn-close">✖️ Fechar</button>
+    </div>
+
+    <script>
+        // Auto-imprimir ao carregar (opcional - comentado)
+        // window.onload = function() {
+        //     window.print();
+        // }
+
+        // Atalho de teclado para imprimir
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'p') {
+                event.preventDefault();
+                window.print();
+            }
+        });
+    </script>
+</body>
+</html>

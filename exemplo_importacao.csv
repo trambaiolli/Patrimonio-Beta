@@ -1,0 +1,6 @@
+NI,TAG,Descrição,Sala,Local,Bloco,Empresa,Observações
+"TEST001","TAG-TEST-001","Notebook HP EliteBook 840","201","Mesa do Gerente","Bloco C","TI","Equipamento de teste - Importação CSV"
+"TEST002","TAG-TEST-002","Monitor Samsung 27 polegadas","201","Mesa do Gerente","Bloco C","TI","Monitor Full HD"
+"TEST003","TAG-TEST-003","Teclado sem fio Logitech K380","202","Recepção","Bloco A","Administrativo","Teclado Bluetooth"
+"TEST004","TAG-TEST-004","Mouse sem fio Microsoft","202","Recepção","Bloco A","Administrativo","Mouse óptico"
+"TEST005","TAG-TEST-005","Impressora HP LaserJet Pro","203","Sala de Impressão","Bloco B","Geral","Impressora monocromática"

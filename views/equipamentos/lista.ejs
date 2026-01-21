@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipamentos - Sistema de Patrimônio</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="app-shell">
+    <%- include('../partials/header', { activePage: 'equipamentos', username }) %>
+
+    <main class="content-area">
+        <section class="panel">
+            <div class="panel-heading panel-heading-compact">Inventário detalhado</div>
+            <div class="panel-body">
+                <div class="page-header">
+                    <div>
+                        <div class="section-title">Gerenciamento de equipamentos</div>
+                        <p class="section-subtitle">Filtre por NI, TAG, salas ou Empresa para localizar o patrimônio desejado.</p>
+                    </div>
+                    <div class="header-actions">
+                        <% 
+                        const printUrl = '/equipamentos/imprimir-lista?' + 
+                            (search ? 'search=' + encodeURIComponent(search) + '&' : '') +
+                            (sala ? 'sala=' + encodeURIComponent(sala) + '&' : '') +
+                            (empresa ? 'empresa=' + encodeURIComponent(empresa) : '');
+                        %>
+                        <a href="<%= printUrl %>" class="btn btn-warning" target="_blank" title="Imprimir resultados filtrados">🖨️ Lista filtrada</a>
+                        <a href="/equipamentos/exportar" class="btn btn-secondary" title="Exportar para CSV">📊 Exportar CSV</a>
+                        <a href="/equipamentos/importar" class="btn btn-secondary" title="Importar de CSV">📥 Importar CSV</a>
+                        <a href="/equipamentos/novo" class="btn btn-primary">+ Novo Equipamento</a>
+                    </div>
+                </div>
+
+                <% if (message) { %>
+                    <div class="alert alert-<%= messageType %>" style="margin-top: 18px;">
+                        <%= message %>
+                    </div>
+                <% } %>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading panel-heading-compact">Filtros e busca</div>
+            <div class="panel-body">
+                <form method="GET" action="/equipamentos" class="filters-form">
+                    <div class="field field-wide">
+                        <label for="search">Busca geral</label>
+                        <input 
+                            type="text" 
+                            id="search"
+                            name="search" 
+                            placeholder="Digite NI, TAG ou descrição"
+                            value="<%= search %>"
+                            class="search-input"
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="sala">Sala</label>
+                        <select name="sala" id="sala">
+                            <option value="">Todas</option>
+                            <% salas.forEach(s => { %>
+                                <option value="<%= s %>" <%= sala === s ? 'selected' : '' %>><%= s %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="empresa">Emprestimo</label>
+                        <select name="empresa" id="empresa">
+                            <option value="">Todas</option>
+                            <% empresas.forEach(e => { %>
+                                <option value="<%= e %>" <%= empresa === e ? 'selected' : '' %>><%= e %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+
+                    <div class="actions filters-actions">
+                        <button type="submit" class="btn btn-primary">Aplicar filtros</button>
+                        <a href="/equipamentos" class="btn btn-secondary">Limpar</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="panel table-card">
+            <div class="panel-heading panel-heading-compact">Resultados</div>
+            <div class="panel-body">
+                <% if (equipamentos.length === 0) { %>
+                    <div class="empty-state">
+                        <p>Nenhum equipamento corresponde aos filtros atuais.</p>
+                        <a href="/equipamentos/novo" class="btn btn-primary">Cadastrar primeiro equipamento</a>
+                    </div>
+                <% } else { %>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>NI</th>
+                                    <th>TAG</th>
+                                    <th>Descrição</th>
+                                    <th>Sala</th>
+                                    <th>Local</th>
+                                    <th>Bloco</th>
+                                    <th>Emprestimo</th>
+                                    <th>Observações</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% equipamentos.forEach(equip => { %>
+                                    <tr>
+                                        <td><strong><%= equip.ni %></strong></td>
+                                        <td><%= equip.tag %></td>
+                                        <td><%= equip.descricao %></td>
+                                        <td><%= equip.sala || '-' %></td>
+                                        <td><%= equip.local || '-' %></td>
+                                        <td><%= equip.bloco || '-' %></td>
+                                        <td><%= equip.emp || '-' %></td>
+                                        <td><%= equip.obs || '-' %></td>
+                                        <td class="actions">
+                                            <a href="/equipamentos/visualizar/<%= equip.ni %>" class="btn btn-sm btn-info" title="Visualizar">👁️</a>
+                                            <a href="/equipamentos/editar/<%= equip.ni %>" class="btn btn-sm btn-secondary" title="Editar">✏️</a>
+                                            <a href="/equipamentos/imprimir/<%= equip.ni %>" class="btn btn-sm btn-warning" title="Imprimir Etiqueta" target="_blank">🖨️</a>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-info">
+                        <p>Total de equipamentos: <strong><%= equipamentos.length %></strong></p>
+                    </div>
+                <% } %>
+            </div>
+        </section>
+    </main>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>

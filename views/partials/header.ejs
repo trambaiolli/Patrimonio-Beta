@@ -1,0 +1,23 @@
+<header class="app-header">
+    <div class="container header-grid">
+        <div class="brand-block">
+            <span class="brand-eyebrow">Gestão Patrimonial</span>
+            <h1>Sistema de Patrimônio</h1>
+        </div>
+        <div class="nav-meta">
+            <nav class="nav-links">
+                <a href="/dashboard" class="<%= activePage === 'dashboard' ? 'is-active' : '' %>">Dashboard</a>
+                <a href="/equipamentos" class="<%= ['equipamentos', 'form', 'importar', 'detalhes'].includes(activePage) ? 'is-active' : '' %>">Equipamentos</a>
+            </nav>
+            <% if (typeof username !== 'undefined' && username) { %>
+            <div class="user-meta">
+                <span class="user-chip">
+                    <small>Usuário</small>
+                    <strong><%= username %></strong>
+                </span>
+                <a href="/logout" class="btn btn-ghost">Sair</a>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</header>

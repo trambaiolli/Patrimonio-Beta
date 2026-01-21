@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Botões CRUD</title>
+    <link rel="stylesheet" href="/style.css?v=3">
+    <style>
+        /* Estilos de teste adicionais para garantir visibilidade */
+        .test-section {
+            margin: 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-buttons {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .test-label {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+        <h1>🧪 Teste de Visibilidade dos Botões CRUD</h1>
+        
+        <div class="test-section">
+            <h2>1. Botões de Tamanho Normal</h2>
+            <div class="test-buttons">
+                <span class="test-label">Você deve ver 5 botões coloridos:</span>
+                <a href="#" class="btn btn-primary">Primary</a>
+                <a href="#" class="btn btn-secondary">Secondary</a>
+                <a href="#" class="btn btn-danger">Danger</a>
+                <a href="#" class="btn btn-info">Info</a>
+                <a href="#" class="btn btn-warning">Warning</a>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>2. Botões Pequenos (btn-sm) - Usados na Tabela</h2>
+            <div class="test-buttons">
+                <span class="test-label">Você deve ver 4 botões pequenos com ícones:</span>
+                <a href="#" class="btn btn-sm btn-info" title="Visualizar">👁️</a>
+                <a href="#" class="btn btn-sm btn-secondary" title="Editar">✏️</a>
+                <a href="#" class="btn btn-sm btn-warning" title="Imprimir">🖨️</a>
+                <button type="button" class="btn btn-sm btn-danger" title="Excluir">🗑️</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>3. Tabela de Teste (Como na página Equipamentos)</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>NI</th>
+                            <th>TAG</th>
+                            <th>Descrição</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>TEST-001</td>
+                            <td>Equipamento de Teste 1</td>
+                            <td class="actions">
+                                <a href="#" class="btn btn-sm btn-info" title="Visualizar">👁️</a>
+                                <a href="#" class="btn btn-sm btn-secondary" title="Editar">✏️</a>
+                                <a href="#" class="btn btn-sm btn-warning" title="Imprimir">🖨️</a>
+                                <button type="button" class="btn btn-sm btn-danger" title="Excluir">🗑️</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>TEST-002</td>
+                            <td>Equipamento de Teste 2</td>
+                            <td class="actions">
+                                <a href="#" class="btn btn-sm btn-info" title="Visualizar">👁️</a>
+                                <a href="#" class="btn btn-sm btn-secondary" title="Editar">✏️</a>
+                                <a href="#" class="btn btn-sm btn-warning" title="Imprimir">🖨️</a>
+                                <button type="button" class="btn btn-sm btn-danger" title="Excluir">🗑️</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>TEST-003</td>
+                            <td>Equipamento de Teste 3</td>
+                            <td class="actions">
+                                <a href="#" class="btn btn-sm btn-info" title="Visualizar">👁️</a>
+                                <a href="#" class="btn btn-sm btn-secondary" title="Editar">✏️</a>
+                                <a href="#" class="btn btn-sm btn-warning" title="Imprimir">🖨️</a>
+                                <button type="button" class="btn btn-sm btn-danger" title="Excluir">🗑️</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="test-section" style="background: #d4edda; border: 2px solid #28a745;">
+            <h2>✅ Checklist de Visibilidade</h2>
+            <p><strong>Se você NÃO vê os botões acima:</strong></p>
+            <ol>
+                <li>Pressione <kbd>Ctrl + Shift + Delete</kbd> e limpe o cache</li>
+                <li>Pressione <kbd>F5</kbd> ou <kbd>Ctrl + F5</kbd> para recarregar</li>
+                <li>Pressione <kbd>F12</kbd> → Aba <strong>Console</strong> → Veja se há erros em vermelho</li>
+                <li>Pressione <kbd>F12</kbd> → Aba <strong>Network</strong> → Recarregue → Procure <code>style.css</code> → Veja se status é <strong>200</strong></li>
+            </ol>
+            <p><strong>Se você VÊ os botões aqui mas NÃO vê em /equipamentos:</strong></p>
+            <ul>
+                <li>O problema pode ser JavaScript bloqueando a renderização</li>
+                <li>Ou há um erro de CSS específico na página de equipamentos</li>
+                <li>Abra o DevTools (F12) e compare esta página com /equipamentos</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>🔗 Links para Testes</h2>
+            <p>
+                <a href="/equipamentos" class="btn btn-primary">Ir para Lista de Equipamentos</a>
+                <a href="/equipamentos/novo" class="btn btn-secondary">Novo Equipamento</a>
+                <a href="/dashboard" class="btn btn-info">Dashboard</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

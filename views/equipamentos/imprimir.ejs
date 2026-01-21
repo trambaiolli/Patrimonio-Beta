@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etiqueta - <%= equipamento.ni %></title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Barlow', 'Segoe UI', sans-serif;
+            background-color: #e4e9f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: #1e2d3f;
+        }
+
+        .etiqueta-container {
+            background-color: #fdfefe;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(127, 148, 183, 0.3);
+            box-shadow: 0 20px 50px rgba(46, 64, 100, 0.08);
+        }
+
+        .etiqueta {
+            border: 3px solid #3e5471;
+            padding: 20px;
+            width: 320px;
+            background-color: white;
+        }
+
+        .etiqueta-header {
+            border-bottom: 2px solid #3e5471;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .etiqueta-title {
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            color: #3e5471;
+            letter-spacing: 0.08em;
+        }
+
+        .etiqueta-ni {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 15px 0;
+            letter-spacing: 4px;
+            color: #1e2d3f;
+        }
+
+        .etiqueta-field {
+            text-align: left;
+            margin: 10px 0;
+            padding: 6px;
+            border-bottom: 1px solid rgba(62, 84, 113, 0.3);
+        }
+
+        .etiqueta-label {
+            font-size: 10px;
+            color: #7b8ba8;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            display: block;
+        }
+
+        .etiqueta-value {
+            font-size: 14px;
+            font-weight: bold;
+            display: block;
+            margin-top: 3px;
+            color: #1e2d3f;
+        }
+
+        .etiqueta-footer {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 2px solid #3e5471;
+            font-size: 10px;
+            color: #3e5471;
+        }
+
+        .no-print {
+            margin-top: 20px;
+        }
+
+        .no-print button {
+            padding: 12px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4c8ad9;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin: 5px;
+        }
+
+        .no-print button:hover {
+            background-color: #3b5d88;
+        }
+
+        .no-print .btn-voltar {
+            background-color: #95a5a6;
+        }
+
+        .no-print .btn-voltar:hover {
+            background-color: #7f8c8d;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .etiqueta-container {
+                padding: 0;
+                border: none;
+                box-shadow: none;
+            }
+
+            @page {
+                size: 10cm 15cm;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="etiqueta-container">
+        <div class="etiqueta">
+            <div class="etiqueta-header">
+                <div class="etiqueta-title">Sistema de Patrimônio</div>
+                <div class="etiqueta-title">Etiqueta de Identificação</div>
+            </div>
+
+            <div class="etiqueta-ni"><%= equipamento.ni %></div>
+
+            <div class="etiqueta-field">
+                <span class="etiqueta-label">TAG</span>
+                <span class="etiqueta-value"><%= equipamento.tag %></span>
+            </div>
+
+            <div class="etiqueta-field">
+                <span class="etiqueta-label">Descrição</span>
+                <span class="etiqueta-value"><%= equipamento.descricao %></span>
+            </div>
+
+            <% if (equipamento.sala) { %>
+            <div class="etiqueta-field">
+                <span class="etiqueta-label">Sala</span>
+                <span class="etiqueta-value"><%= equipamento.sala %></span>
+            </div>
+            <% } %>
+
+            <% if (equipamento.bloco) { %>
+            <div class="etiqueta-field">
+                <span class="etiqueta-label">Bloco</span>
+                <span class="etiqueta-value"><%= equipamento.bloco %></span>
+            </div>
+            <% } %>
+
+            <% if (equipamento.emp) { %>
+            <div class="etiqueta-field">
+                <span class="etiqueta-label">Emprestimo</span>
+                <span class="etiqueta-value"><%= equipamento.emp %></span>
+            </div>
+            <% } %>
+
+            <div class="etiqueta-footer">
+                Data: <%= new Date().toLocaleDateString('pt-BR') %>
+            </div>
+        </div>
+
+        <div class="no-print">
+            <button onclick="window.print()">🖨️ Imprimir Etiqueta</button>
+            <button onclick="window.close()" class="btn-voltar">✖️ Fechar</button>
+        </div>
+    </div>
+</body>
+</html>

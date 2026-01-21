@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema de Patrimônio</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="app-shell">
+    <%- include('partials/header', { activePage: 'dashboard', username }) %>
+
+    <main class="content-area dashboard-page">
+        <section class="panel">
+            <div class="panel-heading panel-heading-compact">Visão Geral</div>
+            <div class="panel-body">
+                <div class="section-title">Painel analítico</div>
+                <p class="section-subtitle">Acompanhe o inventário patrimonial com indicadores claros e sempre atualizados.</p>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading panel-heading-compact">Indicadores rápidos</div>
+            <div class="panel-body stats-grid">
+                <div class="stat-card">
+                    <p>Equipamentos catalogados</p>
+                    <h3><%= total %></h3>
+                </div>
+                <div class="stat-card">
+                    <p>Salas com registros</p>
+                    <h3><%= porSala.length %></h3>
+                </div>
+                <div class="stat-card">
+                    <p>Empresas responsáveis</p>
+                    <h3><%= porEmpresa.length %></h3>
+                </div>
+                <a href="/equipamentos/novo" class="stat-card" style="text-decoration: none; color: inherit;">
+                    <p>Registrar novo item</p>
+                    <h3>+</h3>
+                </a>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading panel-heading-compact">Distribuição do patrimônio</div>
+            <div class="panel-body dashboard-grid">
+                <div class="sub-panel">
+                    <div class="sub-panel-title">Equipamentos por sala (top 5)</div>
+                    <% if (porSala.length === 0) { %>
+                        <div class="empty-state">Nenhuma sala cadastrada</div>
+                    <% } else { %>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Sala</th>
+                                        <th>Quantidade</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% porSala.forEach(item => { %>
+                                        <tr>
+                                            <td><strong><%= item.sala %></strong></td>
+                                            <td><span class="badge"><%= item.total %></span></td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } %>
+                </div>
+
+                <div class="sub-panel">
+                    <div class="sub-panel-title">Equipamentos por empresa (top 5)</div>
+                    <% if (porEmpresa.length === 0) { %>
+                        <div class="empty-state">Nenhuma empresa cadastrada</div>
+                    <% } else { %>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Empresa</th>
+                                        <th>Quantidade</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% porEmpresa.forEach(item => { %>
+                                        <tr>
+                                            <td><strong><%= item.emp %></strong></td>
+                                            <td><span class="badge"><%= item.total %></span></td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel table-card">
+            <div class="panel-heading panel-heading-compact">Últimos equipamentos</div>
+            <div class="panel-body">
+                <% if (ultimos.length === 0) { %>
+                    <div class="empty-state">Nenhum equipamento cadastrado</div>
+                <% } else { %>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>NI</th>
+                                    <th>TAG</th>
+                                    <th>Descrição</th>
+                                    <th>Sala</th>
+                                    <th>Empresa</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% ultimos.forEach(equip => { %>
+                                    <tr>
+                                        <td><strong><%= equip.ni %></strong></td>
+                                        <td><%= equip.tag %></td>
+                                        <td><%= equip.descricao %></td>
+                                        <td><%= equip.sala || '-' %></td>
+                                        <td><%= equip.emp || '-' %></td>
+                                        <td class="actions">
+                                            <a href="/equipamentos/visualizar/<%= equip.ni %>" class="btn btn-sm btn-info">Ver</a>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading panel-heading-compact">Ações rápidas</div>
+            <div class="panel-body quick-actions">
+                <a href="/equipamentos/novo" class="action-card">
+                    <span class="action-icon">➕</span>
+                    <span>Registrar equipamento</span>
+                </a>
+                <a href="/equipamentos" class="action-card">
+                    <span class="action-icon">📋</span>
+                    <span>Listar patrimônio</span>
+                </a>
+                <a href="/equipamentos/exportar" class="action-card">
+                    <span class="action-icon">📊</span>
+                    <span>Exportar para CSV</span>
+                </a>
+                <a href="/equipamentos/importar" class="action-card">
+                    <span class="action-icon">📥</span>
+                    <span>Importar via CSV</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <%- include('partials/footer') %>
+</body>
+</html>

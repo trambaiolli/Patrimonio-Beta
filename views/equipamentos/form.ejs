@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= equipamento ? 'Editar' : 'Novo' %> Equipamento - Sistema de Patrimônio</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="app-shell">
+    <%- include('../partials/header', { activePage: 'form', username }) %>
+
+    <main class="content-area">
+        <section class="panel">
+            <div class="panel-heading">Ficha patrimonial</div>
+            <div class="panel-body">
+                <div class="page-header">
+                    <div>
+                        <div class="section-title"><%= equipamento ? 'Editar equipamento' : 'Novo equipamento' %></div>
+                        <p class="section-subtitle">Preencha os campos abaixo para manter o controle alinhado ao modelo visual solicitado.</p>
+                    </div>
+                    <a href="/equipamentos" class="btn btn-secondary">← Voltar</a>
+                </div>
+
+                <% if (error) { %>
+                    <div class="alert alert-error" style="margin-top: 18px;">
+                        <%= error %>
+                    </div>
+                <% } %>
+
+                <form method="POST" action="<%= equipamento ? '/equipamentos/editar/' + equipamento.ni : '/equipamentos' %>">
+                    <div class="sub-panel">
+                        <div class="sub-panel-title">Identificação</div>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label for="ni">NI *</label>
+                                <input 
+                                    type="text"
+                                    id="ni"
+                                    name="ni"
+                                    value="<%= equipamento ? equipamento.ni : '' %>"
+                                    <%= equipamento ? 'readonly class="readonly"' : 'required' %>
+                                >
+                                <% if (equipamento) { %>
+                                    <small>O NI não pode ser alterado.</small>
+                                <% } %>
+                            </div>
+                            <div class="field">
+                                <label for="tag">TAG *</label>
+                                <input type="text" id="tag" name="tag" value="<%= equipamento ? equipamento.tag : '' %>" required>
+                            </div>
+                            <div class="field" style="grid-column: span 2;">
+                                <label for="descricao">Descrição *</label>
+                                <input type="text" id="descricao" name="descricao" value="<%= equipamento ? equipamento.descricao : '' %>" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-panel">
+                        <div class="sub-panel-title">Localização</div>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label for="sala">Sala</label>
+                                <input type="text" id="sala" name="sala" value="<%= equipamento ? (equipamento.sala || '') : '' %>">
+                            </div>
+                            <div class="field">
+                                <label for="local">Local</label>
+                                <input type="text" id="local" name="local" value="<%= equipamento ? (equipamento.local || '') : '' %>">
+                            </div>
+                            <div class="field">
+                                <label for="bloco">Bloco</label>
+                                <input type="text" id="bloco" name="bloco" value="<%= equipamento ? (equipamento.bloco || '') : '' %>">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-panel">
+                        <div class="sub-panel-title">Responsabilidade</div>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label for="emp">Emprestimo</label>
+                                <input type="text" id="emp" name="emp" value="<%= equipamento ? (equipamento.emp || '') : '' %>">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-panel">
+                        <div class="sub-panel-title">Observações</div>
+                        <div class="field">
+                            <label for="obs">Detalhes adicionais</label>
+                            <textarea id="obs" name="obs" rows="4"><%= equipamento ? (equipamento.obs || '') : '' %></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <%= equipamento ? 'Atualizar registro' : 'Cadastrar equipamento' %>
+                        </button>
+                        <a href="/equipamentos" class="btn btn-secondary">Cancelar</a>
+                    </div>
+
+                    <p class="form-note">Campos marcados com * são obrigatórios.</p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>

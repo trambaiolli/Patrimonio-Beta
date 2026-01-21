@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema de Patrimônio</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="login-page">
+    <div class="login-card">
+        <div class="panel-heading">
+            <span class="brand-eyebrow">Acesso Seguro</span>
+            <div class="section-title">Sistema de Patrimônio</div>
+        </div>
+        <div class="panel-body">
+            <p class="section-subtitle">Entre com suas credenciais para continuar</p>
+
+            <% if (error) { %>
+                <div class="alert alert-error" style="margin: 16px 0;">
+                    <%= error %>
+                </div>
+            <% } %>
+
+            <form method="POST" action="/login">
+                <div class="field">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" name="username" required autofocus>
+                </div>
+
+                <div class="field">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                    Entrar no sistema
+                </button>
+            </form>
+
+            <div class="login-info">
+                <p><strong>Desenvolvido por:</strong> Luciano Trambaiolli</p>
+                <p><strong>Senai 928:</strong> Pompeia</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

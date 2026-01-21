@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Equipamento - Sistema de Patrimônio</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="app-shell">
+    <%- include('../partials/header', { activePage: 'detalhes', username }) %>
+
+    <main class="content-area view-page">
+        <section class="panel">
+            <div class="panel-heading panel-heading-compact">Ficha detalhada</div>
+            <div class="panel-body">
+                <div class="page-header">
+                    <div>
+                        <div class="section-title">Equipamento <strong><%= equipamento.ni %></strong></div>
+                        <p class="section-subtitle">Visualização alinhada ao novo padrão cinza/azul do sistema.</p>
+                    </div>
+                    <div class="header-actions">
+                        <a href="/equipamentos" class="btn btn-secondary">← Voltar</a>
+                        <a href="/equipamentos/editar/<%= equipamento.ni %>" class="btn btn-primary">✏️ Editar</a>
+                        <a href="/equipamentos/imprimir/<%= equipamento.ni %>" class="btn btn-warning" target="_blank">🖨️ Etiqueta</a>
+                    </div>
+                </div>
+
+                <div class="sub-panel">
+                    <div class="sub-panel-title">Informações principais</div>
+                    <div class="field-grid">
+                        <div class="field">
+                            <label>NI</label>
+                            <input type="text" value="<%= equipamento.ni %>" readonly class="readonly">
+                        </div>
+                        <div class="field">
+                            <label>TAG</label>
+                            <input type="text" value="<%= equipamento.tag %>" readonly class="readonly">
+                        </div>
+                        <div class="field" style="grid-column: span 2;">
+                            <label>Descrição</label>
+                            <textarea readonly class="readonly" rows="2"><%= equipamento.descricao %></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-panel">
+                    <div class="sub-panel-title">Localização</div>
+                    <div class="field-grid">
+                        <div class="field">
+                            <label>Sala</label>
+                            <input type="text" value="<%= equipamento.sala || 'Não informado' %>" readonly class="readonly">
+                        </div>
+                        <div class="field">
+                            <label>Local</label>
+                            <input type="text" value="<%= equipamento.local || 'Não informado' %>" readonly class="readonly">
+                        </div>
+                        <div class="field">
+                            <label>Bloco</label>
+                            <input type="text" value="<%= equipamento.bloco || 'Não informado' %>" readonly class="readonly">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-panel">
+                    <div class="sub-panel-title">Responsabilidade</div>
+                    <div class="field-grid">
+                        <div class="field">
+                            <label>Emprestimo</label>
+                            <input type="text" value="<%= equipamento.emp || 'Não informado' %>" readonly class="readonly">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-panel">
+                    <div class="sub-panel-title">Observações</div>
+                    <div class="field">
+                        <label>Detalhes adicionais</label>
+                        <textarea readonly class="readonly" rows="3"><%= equipamento.obs || 'Sem observações registradas.' %></textarea>
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <a href="/equipamentos/editar/<%= equipamento.ni %>" class="btn btn-primary">Editar equipamento</a>
+                    <a href="/equipamentos" class="btn btn-secondary">Voltar à lista</a>
+                    <form method="POST" action="/equipamentos/excluir/<%= equipamento.ni %>" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir este equipamento?\n\nNI: <%= equipamento.ni %>\nDescrição: <%= equipamento.descricao %>');">
+                        <button type="submit" class="btn btn-danger">Excluir equipamento</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>
