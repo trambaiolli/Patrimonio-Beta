@@ -69,17 +69,17 @@
                             <div class="field">
                                 <label for="bloco">Bloco</label>
                                 <select id="bloco" name="bloco">
-                                    <option value="" <%= !equipamento || !equipamento.bloco ? 'selected' : '' %>>Selecione um bloco</option>
+                                    <option value="" <%= !equipamento || !equipamento.bloco ? 'selected' : '' %>>Selecione</option>
                                     <% if (equipamento && equipamento.bloco && !['A', 'B', 'C', 'D', 'E', 'F', 'G'].includes(equipamento.bloco)) { %>
                                         <option value="<%= equipamento.bloco %>" selected><%= equipamento.bloco %></option>
                                     <% } %>
-                                    <option value="A" <%= equipamento && equipamento.bloco === 'A' ? 'selected' : '' %>>Bloco A</option>
-                                    <option value="B" <%= equipamento && equipamento.bloco === 'B' ? 'selected' : '' %>>Bloco B</option>
-                                    <option value="C" <%= equipamento && equipamento.bloco === 'C' ? 'selected' : '' %>>Bloco C</option>
-                                    <option value="D" <%= equipamento && equipamento.bloco === 'D' ? 'selected' : '' %>>Bloco D</option>
-                                    <option value="E" <%= equipamento && equipamento.bloco === 'E' ? 'selected' : '' %>>Bloco E</option>
-                                    <option value="F" <%= equipamento && equipamento.bloco === 'F' ? 'selected' : '' %>>Bloco F</option>
-                                    <option value="G" <%= equipamento && equipamento.bloco === 'G' ? 'selected' : '' %>>Bloco G</option>
+                                    <option value="A" <%= equipamento && equipamento.bloco === 'A' ? 'selected' : '' %>>A</option>
+                                    <option value="B" <%= equipamento && equipamento.bloco === 'B' ? 'selected' : '' %>>B</option>
+                                    <option value="C" <%= equipamento && equipamento.bloco === 'C' ? 'selected' : '' %>>C</option>
+                                    <option value="D" <%= equipamento && equipamento.bloco === 'D' ? 'selected' : '' %>>D</option>
+                                    <option value="E" <%= equipamento && equipamento.bloco === 'E' ? 'selected' : '' %>>E</option>
+                                    <option value="F" <%= equipamento && equipamento.bloco === 'F' ? 'selected' : '' %>>F</option>
+                                    <option value="G" <%= equipamento && equipamento.bloco === 'G' ? 'selected' : '' %>>G</option>
                                 </select>
                             </div>
                         </div>
