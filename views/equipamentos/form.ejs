@@ -117,5 +117,99 @@
     </main>
 
     <%- include('../partials/footer') %>
+    <script>
+        const salasPorCodigo = {
+            A01: ['DIREÇÃO', 'A'],
+            A02: ['SALA DE REUNIÕES', 'A'],
+            A03: ['COORDENAÇÃO', 'A'],
+            A04: ['SECRETARIA', 'A'],
+            A05: ['DEPÓSITO DE MATERIAIS - SECRETARIA', 'A'],
+            A06: ['AUDITÓRIO', 'A'],
+            A07: ['SALA DE AULA - ENSINO MÉDIO', 'A'],
+            A08: ['SALA DE AULA - ENSINO MÉDIO', 'A'],
+            A09: ['SALA DE AULA - ENSINO MÉDIO', 'A'],
+            A10: ['OLIMPIADA - DEV', 'A'],
+            A11: ['SALA SERVIDOR', 'A'],
+            B01: ['LABORATÓRIO DE INSTALAÇÕES ELÉTRICAS', 'B'],
+            B02: ['LABORATÓRIO DE COMANDOS E MÁQUINAS ELÉTRICAS', 'B'],
+            B04: ['BIBLIOTECA', 'B'],
+            B05: ['REFEITÓRIO', 'B'],
+            B06: ['LABORATÓRIO DE ELETRÔNICA', 'B'],
+            B07: ['LABORATÓRIO DE AUTOMAÇÃO PREDIAL', 'B'],
+            B08: ['SALA DE AULA', 'B'],
+            B09: ['LABORATÓRIO DE CLP', 'B'],
+            B10: ['LABORATÓRIO DE PROJETOS ELETROELETRÔNICOS', 'B'],
+            B11: ['SALA DE AULA', 'B'],
+            B12: ['DEPÓSITO DE MATERIAS - ELETROELETRÔNICA', 'B'],
+            C01: ['ARQUIVO MORTO DA SECRETARIA', 'C'],
+            C02: ['SALA DOS PROFESSORES', 'C'],
+            C03: ['DEPÓSITO', 'C'],
+            C04: ['LABORATÓRIO DE QUÍMICA, FÍSICA E BIOLOGIA', 'C'],
+            C05: ['ANALISTA DE QUALIDADE DE VIDA', 'C'],
+            C06: ['SALA DE AULA - ENSINO MÉDIO', 'C'],
+            C07: ['SALA DE AULA - ENSINO MÉDIO', 'C'],
+            C08: ['SALA DE MÚSICA', 'C'],
+            C09: ['SALA DE EXPRESSÃO CORPORAL/ARTES', 'C'],
+            C10: ['SALA DE AULA - ENSINO MÉDIO', 'C'],
+            C11: ['DEPÓSITO', 'C'],
+            C12: ['COMPRESSOR - BLOCO C', 'C'],
+            D01: ['SALA DE AULA', 'D'],
+            D02: ['SALA DE AULA', 'D'],
+            D04: ['OFICINA DE METALURGIA - SOLDAGEM', 'D'],
+            D05: ['SALA PPO', 'D'],
+            D06: ['DEPÓSITO DE MATERIAIS - SOLDAGEM', 'D'],
+            E01: ['LABORATÓRIO DE INFORMÁTICA', 'E'],
+            E02: ['LABORATÓRIO DE INFORMÁTICA', 'E'],
+            E03: ['SALA DA OLIMPÍADA', 'E'],
+            E04: ['LABORATÓRIO DE PROJETOS MECÂNICOS', 'E'],
+            E05: ['DEPÓSITO DE MATERIAIS - POLÍMEROS', 'E'],
+            E06: ['LABORATÓRIO DE METROLOGIA', 'E'],
+            E07: ['LABORATÓRIO DE ENSAIOS E METALOGRAFIA', 'E'],
+            E08: ['LABORATÓRIO DE MONTAGEM DE COMPONENTES', 'E'],
+            E09: ['DEPÓSITO DE MATERIAS - METALMECÂNICA', 'E'],
+            E10: ['LABORATÓRIO DE HIDRÁULICA', 'E'],
+            E11: ['SALA DE AULA - DESENHO', 'E'],
+            E12: ['SALA DE AULA', 'E'],
+            E13: ['SALA DE AULA', 'E'],
+            E14: ['LABORATÓRIO DE PNEUMÁTICA', 'E'],
+            E15: ['DEPÓSITO DE MATERIAS - INFORMÁTICA', 'E'],
+            E16: ['LABORATÓRIO DE MATERIAS POLIMÉRICOS', 'E'],
+            E17: ['LABORATÓRIO DE ENSAIOS EM POLÍMEROS', 'E'],
+            E18: ['LABORATÓRIO DE PROTOTIPAGEM E CORTE A LASER', 'E'],
+            E19: ['SALA DE PPO', 'E'],
+            E20: ['SALA DA COORDENAÇÃO', 'E'],
+            E21: ['LABORATÓRIO DE CAD / CAM', 'E'],
+            E22: ['LABORATÓRIO DE CAD / CAM', 'E'],
+            E23: ['OFICINA DE TORNEARIA CNC', 'E'],
+            E24: ['OFICINA DE CENTRO DE USINAGEM', 'E'],
+            E25: ['OFICINA DE TORNEARIA', 'E'],
+            E26: ['OFICINA DE AJUSTAGEM', 'E'],
+            E27: ['OFICINA DE INJEÇÃO', 'E'],
+            E28: ['OFICINA DE SOPRO E OUTROS PROCESSOS', 'E'],
+            E29: ['OFICINA DE MONTAGEM DE MÁQUINAS', 'E'],
+            E30: ['OFICINA DE MONTAGEM DE COMPONENTES', 'E'],
+            E31: ['ALMOXARIFADO', 'E'],
+            E32: ['COMPRESSOR - BLOCO E', 'E'],
+            E33: ['DEPÓSITO DE MATERIAIS QUÍMICOS', 'E'],
+            F01: ['OFICINA DE CERÂMICA', 'F'],
+            G00: ['GINÁSIO', 'G'],
+            G01: ['EQUIPAMENTOS SOB CUSTÓDIA DE ALUNO', 'G'],
+            G02: ['EQUIPAMENTOS SOB CUSTÓDIA DE FUNCIONARIO', 'G'],
+            G03: ['PATRIMONIOS A CLASSIFICAR', 'G'],
+            G04: ['EMPRÉSTIMO', 'G']
+        };
+
+        const campoSala = document.getElementById('sala');
+        const campoLocal = document.getElementById('local');
+        const campoBloco = document.getElementById('bloco');
+
+        campoSala.addEventListener('input', () => {
+            const codigoSala = campoSala.value.trim().toUpperCase();
+            const dadosSala = salasPorCodigo[codigoSala];
+
+            campoLocal.value = dadosSala ? dadosSala[0] : '';
+            campoBloco.value = dadosSala ? dadosSala[1] : '';
+        });
+    </script>
 </body>
 </html>
