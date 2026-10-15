@@ -23,7 +23,7 @@
 - ✅ **Ações Rápidas:**
   - Novo Equipamento
   - Listar Todos
-  - Exportar CSV
+  - Exportar CSV/Excel
   - Buscar
 
 **Acesso:** http://localhost:3000/dashboard (página inicial após login)
@@ -78,9 +78,10 @@
 
 ---
 
-## 📊 **4. EXPORTAÇÃO PARA CSV**
+## 📊 **4. EXPORTAÇÃO PARA CSV/EXCEL**
 
 ### Rota: `GET /equipamentos/exportar`
+### Rota: `GET /equipamentos/exportar-excel`
 
 **Funcionalidades:**
 - ✅ **Exportação Completa:**
@@ -100,7 +101,7 @@
   - Backup dos dados
   - Análise externa
 
-**Acesso:** Botão "📊 Exportar CSV" na listagem
+**Acesso:** Botões "📊 Exportar CSV" e "📗 Exportar Excel" na listagem
 
 ---
 
@@ -140,7 +141,7 @@
 
 ### Listagem de Equipamentos:
 - ✅ Ícones nos botões (👁️ Ver, ✏️ Editar, 🖨️ Imprimir, 🗑️ Excluir)
-- ✅ Botão "Exportar CSV" no cabeçalho
+- ✅ Botões "Exportar CSV" e "Exportar Excel" no cabeçalho
 - ✅ Formulário de filtros responsivo
 - ✅ Contador de resultados
 - ✅ Navegação com Dashboard
@@ -174,6 +175,9 @@
 | `/equipamentos/editar/:ni` | POST | Atualizar equipamento |
 | `/equipamentos/excluir/:ni` | POST | Excluir equipamento |
 | `/equipamentos/exportar` | GET | **NOVO** - Exportar para CSV |
+| `/equipamentos/exportar-excel` | GET | **NOVO** - Exportar para Excel |
+| `/equipamentos/importar` | GET | Página de importação CSV/Excel |
+| `/equipamentos/importar` | POST | Processar importação CSV/Excel |
 | `/equipamentos/imprimir/:ni` | GET | **NOVO** - Página de impressão |
 
 ---
@@ -229,7 +233,7 @@ Imprimir ou salvar como PDF
 
 ### 7. Exportar Dados
 ```
-Clicar em "📊 Exportar CSV"
+Clicar em "📊 Exportar CSV" ou "📗 Exportar Excel"
 ↓
 Download automático do arquivo
 ↓
@@ -256,7 +260,7 @@ Cadastrar
 - ✅ **5 funcionalidades** CRUD completas
 - ✅ **3 tipos** de filtros
 - ✅ **4 formatos** de visualização (Lista, Detalhes, Dashboard, Etiqueta)
-- ✅ **1 exportação** CSV
+- ✅ **2 exportações** (CSV e Excel)
 - ✅ **100% funcional** e testado
 
 ---
@@ -306,8 +310,8 @@ Cadastrar
    - Clique no ícone 👁️ de qualquer equipamento
    - Veja todas as informações
 
-5. **Exporte CSV:**
-   - Clique em "📊 Exportar CSV"
+5. **Exporte CSV/Excel:**
+   - Clique em "📊 Exportar CSV" ou "📗 Exportar Excel"
    - Abra o arquivo no Excel
 
 6. **Imprima Etiqueta:**

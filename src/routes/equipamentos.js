@@ -5,6 +5,7 @@ const isAuthenticated = require('../middleware/auth');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const XLSX = require('xlsx');
 
 // Configurar multer para upload de arquivos
 const storage = multer.diskStorage({
@@ -23,13 +24,84 @@ const storage = multer.diskStorage({
 const upload = multer({ 
     storage: storage,
     fileFilter: (req, file, cb) => {
-        if (file.mimetype === 'text/csv' || path.extname(file.originalname).toLowerCase() === '.csv') {
+        const extensao = path.extname(file.originalname).toLowerCase();
+        const mimeTypesPermitidos = [
+            'text/csv',
+            'application/csv',
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        ];
+        const extensoesPermitidas = ['.csv', '.xls', '.xlsx'];
+
+        if (mimeTypesPermitidos.includes(file.mimetype) || extensoesPermitidas.includes(extensao)) {
             cb(null, true);
         } else {
-            cb(new Error('Apenas arquivos CSV são permitidos'));
+            cb(new Error('Apenas arquivos CSV ou Excel (.xls, .xlsx) são permitidos'));
         }
     }
 });
+
+function parseCsvLine(line) {
+    const values = [];
+    let currentValue = '';
+    let insideQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+
+        if (char === '"') {
+            if (insideQuotes && line[i + 1] === '"') {
+                currentValue += '"';
+                i++;
+            } else {
+                insideQuotes = !insideQuotes;
+            }
+        } else if (char === ',' && !insideQuotes) {
+            values.push(currentValue.trim());
+            currentValue = '';
+        } else {
+            currentValue += char;
+        }
+    }
+
+    values.push(currentValue.trim());
+    return values;
+}
+
+function parseImportRows(filePath, originalFileName) {
+    const fileExtension = path.extname(originalFileName).toLowerCase();
+
+    if (fileExtension === '.xls' || fileExtension === '.xlsx') {
+        const workbook = XLSX.readFile(filePath, { cellDates: false });
+        const firstSheetName = workbook.SheetNames[0];
+
+        if (!firstSheetName) {
+            return [];
+        }
+
+        const worksheet = workbook.Sheets[firstSheetName];
+        const sheetRows = XLSX.utils.sheet_to_json(worksheet, {
+            header: 1,
+            raw: false,
+            defval: ''
+        });
+
+        return sheetRows
+            .slice(1)
+            .filter(row => Array.isArray(row) && row.some(cell => String(cell).trim() !== ''))
+            .map(row => row.map(cell => String(cell).trim()));
+    }
+
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    const content = fileContent.replace(/^\uFEFF/, '');
+    const lines = content.split('\n').filter(line => line.trim());
+
+    if (lines.length < 2) {
+        return [];
+    }
+
+    return lines.slice(1).map(parseCsvLine);
+}
 
 // Aplicar middleware de autenticação em todas as rotas
 router.use(isAuthenticated);
@@ -258,7 +330,39 @@ router.get('/exportar', async (req, res) => {
     }
 });
 
-// GET /equipamentos/importar - Página de importação de CSV
+// GET /equipamentos/exportar-excel - Exportar para Excel
+router.get('/exportar-excel', async (req, res) => {
+    try {
+        const [equipamentos] = await db.query('SELECT * FROM equipamentos ORDER BY ni');
+
+        const dadosPlanilha = equipamentos.map(equip => ({
+            NI: equip.ni,
+            TAG: equip.tag,
+            Descrição: equip.descricao,
+            Sala: equip.sala || '',
+            Local: equip.local || '',
+            Bloco: equip.bloco || '',
+            Empréstimo: equip.emp || '',
+            Observações: equip.obs || ''
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(dadosPlanilha);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Equipamentos');
+
+        const excelBuffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+        const dataAtual = new Date().toISOString().split('T')[0];
+
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', `attachment; filename=equipamentos_${dataAtual}.xlsx`);
+        res.end(excelBuffer);
+    } catch (error) {
+        console.error('Erro ao exportar equipamentos para Excel:', error);
+        res.redirect('/equipamentos?message=Erro ao exportar equipamentos para Excel&type=error');
+    }
+});
+
+// GET /equipamentos/importar - Página de importação de CSV/Excel
 router.get('/importar', (req, res) => {
     res.render('equipamentos/importar', {
         username: req.session.username,
@@ -268,7 +372,7 @@ router.get('/importar', (req, res) => {
     });
 });
 
-// POST /equipamentos/importar - Processar importação de CSV
+// POST /equipamentos/importar - Processar importação de CSV/Excel
 router.post('/importar', upload.single('csvFile'), async (req, res) => {
     if (!req.file) {
         return res.render('equipamentos/importar', {
@@ -281,65 +385,41 @@ router.post('/importar', upload.single('csvFile'), async (req, res) => {
 
     try {
         const filePath = req.file.path;
-        const fileContent = fs.readFileSync(filePath, 'utf-8');
-        
-        // Remover BOM se existir
-        const content = fileContent.replace(/^\uFEFF/, '');
-        
-        // Dividir em linhas
-        const lines = content.split('\n').filter(line => line.trim());
-        
-        if (lines.length < 2) {
+        const importRows = parseImportRows(filePath, req.file.originalname);
+
+        if (importRows.length === 0) {
             fs.unlinkSync(filePath); // Remover arquivo
             return res.render('equipamentos/importar', {
                 username: req.session.username,
-                message: 'Arquivo CSV vazio ou inválido',
+                message: 'Arquivo vazio ou inválido',
                 messageType: 'error',
                 resultado: null
             });
         }
 
-        // Pular cabeçalho e processar linhas
-        const dataLines = lines.slice(1);
         let sucessos = 0;
         let erros = 0;
-        let duplicados = 0;
+        let atualizados = 0;
         const detalhesErros = [];
 
-        for (const line of dataLines) {
+        for (const row of importRows) {
             try {
-                // Parser CSV simples considerando aspas
-                const values = [];
-                let currentValue = '';
-                let insideQuotes = false;
-                
-                for (let i = 0; i < line.length; i++) {
-                    const char = line[i];
-                    
-                    if (char === '"') {
-                        if (insideQuotes && line[i + 1] === '"') {
-                            currentValue += '"';
-                            i++;
-                        } else {
-                            insideQuotes = !insideQuotes;
-                        }
-                    } else if (char === ',' && !insideQuotes) {
-                        values.push(currentValue.trim());
-                        currentValue = '';
-                    } else {
-                        currentValue += char;
-                    }
-                }
-                values.push(currentValue.trim());
-
                 // Validar quantidade de campos
-                if (values.length < 3) {
+                if (!Array.isArray(row) || row.length < 3) {
                     erros++;
-                    detalhesErros.push(`Linha ignorada (campos insuficientes): ${line.substring(0, 50)}...`);
+                    detalhesErros.push('Linha ignorada: campos insuficientes');
                     continue;
                 }
 
-                const [ni, tag, descricao, sala, local, bloco, emp, obs] = values;
+                const [niRaw, tagRaw, descricaoRaw, salaRaw, localRaw, blocoRaw, empRaw, obsRaw] = row;
+                const ni = String(niRaw || '').trim();
+                const tag = String(tagRaw || '').trim();
+                const descricao = String(descricaoRaw || '').trim();
+                const sala = String(salaRaw || '').trim();
+                const local = String(localRaw || '').trim();
+                const bloco = String(blocoRaw || '').trim();
+                const emp = String(empRaw || '').trim();
+                const obs = String(obsRaw || '').trim();
 
                 // Validação de campos obrigatórios
                 if (!ni || !tag || !descricao) {
@@ -352,7 +432,11 @@ router.post('/importar', upload.single('csvFile'), async (req, res) => {
                 const [existing] = await db.query('SELECT ni FROM equipamentos WHERE ni = ?', [ni]);
                 
                 if (existing.length > 0) {
-                    duplicados++;
+                    await db.query(
+                        'UPDATE equipamentos SET tag = ?, descricao = ?, sala = ?, local = ?, bloco = ?, emp = ?, obs = ? WHERE ni = ?',
+                        [tag, descricao, sala || null, local || null, bloco || null, emp || null, obs || null, ni]
+                    );
+                    atualizados++;
                     continue;
                 }
 
@@ -378,16 +462,16 @@ router.post('/importar', upload.single('csvFile'), async (req, res) => {
             message: null,
             messageType: null,
             resultado: {
-                total: dataLines.length,
+                total: importRows.length,
                 sucessos,
                 erros,
-                duplicados,
+                atualizados,
                 detalhesErros: detalhesErros.slice(0, 10) // Limitar a 10 erros
             }
         });
 
     } catch (error) {
-        console.error('Erro ao importar CSV:', error);
+        console.error('Erro ao importar CSV/Excel:', error);
         
         // Remover arquivo se existir
         if (req.file && fs.existsSync(req.file.path)) {

@@ -152,6 +152,10 @@ Abra: `http://localhost:3000`
 - `GET /equipamentos/editar/:ni` - Formulário edição
 - `POST /equipamentos/editar/:ni` - Atualizar equipamento
 - `POST /equipamentos/excluir/:ni` - Excluir equipamento
+- `GET /equipamentos/exportar` - Exportar equipamentos em CSV
+- `GET /equipamentos/exportar-excel` - Exportar equipamentos em Excel
+- `GET /equipamentos/importar` - Página de importação CSV/Excel
+- `POST /equipamentos/importar` - Processar importação CSV/Excel
 
 ---
 

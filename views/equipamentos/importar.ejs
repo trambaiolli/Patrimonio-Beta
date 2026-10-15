@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Importar CSV - Sistema de Patrimônio</title>
+    <title>Importar CSV/Excel - Sistema de Patrimônio</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body class="app-shell">
@@ -15,7 +15,7 @@
             <div class="panel-body">
                 <div class="page-header">
                     <div>
-                        <div class="section-title">Importar equipamentos via CSV</div>
+                        <div class="section-title">Importar equipamentos via CSV/Excel</div>
                         <p class="section-subtitle">Use o modelo padrão para manter o layout homogêneo em todas as páginas.</p>
                     </div>
                     <a href="/equipamentos" class="btn btn-secondary">← Voltar para lista</a>
@@ -43,8 +43,8 @@
                             <span style="color: var(--success);"><%= resultado.sucessos %></span>
                         </div>
                         <div class="resultado-card">
-                            <h4>Duplicados</h4>
-                            <span style="color: var(--warning);"><%= resultado.duplicados %></span>
+                            <h4>Atualizados (duplicados)</h4>
+                            <span style="color: var(--warning);"><%= resultado.atualizados %></span>
                         </div>
                         <div class="resultado-card">
                             <h4>Erros</h4>
@@ -76,10 +76,11 @@
                     <div class="import-instructions">
                         <strong>Checklist do arquivo:</strong>
                         <ul>
-                            <li>Formato CSV com separador vírgula.</li>
+                            <li>Formato CSV (separador vírgula) ou Excel (.xls/.xlsx).</li>
                             <li>Codificação em UTF-8.</li>
                             <li>Campos obrigatórios: NI, TAG e Descrição.</li>
                             <li>Campos opcionais: Sala, Local, Bloco, Empréstimo e Observações.</li>
+                            <li>Se o NI já existir, o registro será atualizado com os dados do arquivo.</li>
                             <li>Primeira linha deve conter o cabeçalho.</li>
                         </ul>
                         <div class="csv-example">
@@ -99,7 +100,7 @@
                                     type="file"
                                     name="csvFile"
                                     id="csvFile"
-                                    accept=".csv"
+                                    accept=".csv,.xls,.xlsx"
                                     required
                                     onchange="updateFileName(this)"
                                 >
@@ -173,7 +174,7 @@
             uploadForm.addEventListener('submit', (e) => {
                 if (!fileInput.files || fileInput.files.length === 0) {
                     e.preventDefault();
-                    alert('Por favor, selecione um arquivo CSV para importar.');
+                    alert('Por favor, selecione um arquivo CSV ou Excel para importar.');
                 }
             });
         }
