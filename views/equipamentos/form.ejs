@@ -107,6 +107,9 @@
                         <button type="submit" class="btn btn-primary">
                             <%= equipamento ? 'Atualizar registro' : 'Cadastrar equipamento' %>
                         </button>
+                        <% if (equipamento) { %>
+                            <button type="button" id="btnEnviarEmail" class="btn btn-secondary">📧 Enviar por e-mail</button>
+                        <% } %>
                         <a href="/equipamentos" class="btn btn-secondary">Cancelar</a>
                     </div>
 
@@ -202,6 +205,12 @@
         const campoSala = document.getElementById('sala');
         const campoLocal = document.getElementById('local');
         const campoBloco = document.getElementById('bloco');
+        const campoNi = document.getElementById('ni');
+        const campoTag = document.getElementById('tag');
+        const campoDescricao = document.getElementById('descricao');
+        const campoEmp = document.getElementById('emp');
+        const campoObs = document.getElementById('obs');
+        const botaoEnviarEmail = document.getElementById('btnEnviarEmail');
 
         campoSala.addEventListener('input', () => {
             const codigoSala = campoSala.value.trim().toUpperCase();
@@ -210,6 +219,29 @@
             campoLocal.value = dadosSala ? dadosSala[0] : '';
             campoBloco.value = dadosSala ? dadosSala[1] : '';
         });
+
+        if (botaoEnviarEmail) {
+            botaoEnviarEmail.addEventListener('click', () => {
+                const assunto = `Transferência de Patrimônio NI ${campoNi.value.trim()}`;
+                const corpo = [
+                    'Olá,',
+                    '',
+                    'Transferência de Patrimônio:',
+                    '',
+                    `NI: ${campoNi.value.trim()}`,
+                    `Descrição: ${campoDescricao.value.trim()}`,
+                    `Sala: ${campoSala.value.trim()}`,
+                    `Local: ${campoLocal.value.trim()}`,
+                    `Bloco: ${campoBloco.value.trim()}`,
+                    `Observações: ${campoObs.value.trim()}`,
+                    '',
+                    'Mensagem enviada pelo Sistema de Patrimônio.'
+                ].join('\n');
+
+                const mailtoUrl = `mailto:?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpo)}`;
+                window.location.href = mailtoUrl;
+            });
+        }
     </script>
 </body>
 </html>

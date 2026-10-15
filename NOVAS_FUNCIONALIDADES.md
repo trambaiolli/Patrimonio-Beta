@@ -214,6 +214,8 @@ Ver todas as informações detalhadas
 Clicar em ✏️ ou no botão "Editar"
 ↓
 Modificar campos e salvar
+↓
+Opcional: clicar em "📧 Enviar por e-mail" para abrir o cliente de e-mail com os dados do item preenchidos
 ```
 
 ### 6. Imprimir Etiqueta
