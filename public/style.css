@@ -345,14 +345,19 @@ a:hover {
 
 .view-page .field-grid {
     gap: 12px;
+    align-items: end;
 }
 
 .view-page .field {
     gap: 6px;
+    min-width: 0;
 }
 
 .view-page .field label {
     font-size: 0.75rem;
+    min-height: 18px;
+    display: flex;
+    align-items: flex-end;
 }
 
 .view-page .field input,
@@ -362,8 +367,24 @@ a:hover {
     font-size: 0.92rem;
 }
 
+.view-page .field input,
+.view-page .field select {
+    height: 40px;
+    line-height: 1.2;
+}
+
 .view-page .field textarea {
     min-height: 80px;
+}
+
+.view-page .location-responsibility-grid {
+    grid-template-columns: 1fr 2fr 1fr 2fr;
+}
+
+@media (max-width: 1100px) {
+    .view-page .location-responsibility-grid {
+        grid-template-columns: repeat(2, minmax(220px, 1fr));
+    }
 }
 
 .readonly {
@@ -1181,5 +1202,109 @@ tbody tr:nth-child(even) td {
 
     .detail-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Ajustes compactos para a listagem de equipamentos */
+.equipamentos-page .content-area {
+    margin: 18px auto 24px;
+    gap: 14px;
+}
+
+.equipamentos-page .panel-heading-compact {
+    padding: 10px 18px;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+}
+
+.equipamentos-page .panel-body {
+    padding: 18px;
+}
+
+.equipamentos-page .page-header {
+    gap: 10px;
+}
+
+.equipamentos-page .section-title {
+    font-size: 1.05rem;
+    line-height: 1.2;
+}
+
+.equipamentos-page .section-subtitle {
+    margin-top: 2px;
+    font-size: 0.94rem;
+}
+
+.equipamentos-page .header-actions {
+    gap: 8px;
+}
+
+.equipamentos-page .btn {
+    padding: 7px 14px;
+    font-size: 0.9rem;
+}
+
+.equipamentos-page .filters-form {
+    padding: 12px;
+    gap: 10px;
+}
+
+.equipamentos-page .field {
+    gap: 5px;
+}
+
+.equipamentos-page .field label {
+    font-size: 0.78rem;
+}
+
+.equipamentos-page .field input,
+.equipamentos-page .field textarea,
+.equipamentos-page .field select,
+.equipamentos-page .search-input {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+}
+
+.equipamentos-page tbody td {
+    padding: 12px 10px;
+}
+
+.equipamentos-page thead th {
+    padding: 10px;
+}
+
+.equipamentos-page td.actions .btn {
+    width: auto;
+    min-width: 40px;
+    padding: 6px 10px;
+}
+
+.equipamentos-form-page .field-grid {
+    align-items: end;
+}
+
+.equipamentos-form-page .field {
+    min-width: 0;
+}
+
+.equipamentos-form-page .field label {
+    min-height: 18px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.equipamentos-form-page .field input,
+.equipamentos-form-page .field select {
+    height: 40px;
+    line-height: 1.2;
+}
+
+.equipamentos-form-page .location-responsibility-grid {
+    grid-template-columns: 1fr 2fr 1fr 2fr;
+}
+
+@media (max-width: 1100px) {
+    .equipamentos-form-page .location-responsibility-grid {
+        grid-template-columns: repeat(2, minmax(220px, 1fr));
     }
 }

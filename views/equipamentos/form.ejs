@@ -6,7 +6,7 @@
     <title><%= equipamento ? 'Editar' : 'Novo' %> Equipamento - Sistema de Patrimônio</title>
     <link rel="stylesheet" href="/style.css">
 </head>
-<body class="app-shell">
+<body class="app-shell equipamentos-form-page">
     <%- include('../partials/header', { activePage: 'form', username }) %>
 
     <main class="content-area">
@@ -27,7 +27,7 @@
                     </div>
                 <% } %>
 
-                <form method="POST" action="<%= equipamento ? '/equipamentos/editar/' + equipamento.ni : '/equipamentos' %>">
+                <form method="POST" action="<%= equipamento ? '/equipamentos/editar/' + encodeURIComponent(equipamento.ni) : '/equipamentos' %>">
                     <div class="sub-panel">
                         <div class="sub-panel-title">Identificação</div>
                         <div class="field-grid">
@@ -56,8 +56,8 @@
                     </div>
 
                     <div class="sub-panel">
-                        <div class="sub-panel-title">Localização</div>
-                        <div class="field-grid">
+                        <div class="sub-panel-title">Localização e responsabilidade</div>
+                        <div class="field-grid location-responsibility-grid">
                             <div class="field">
                                 <label for="sala">Sala</label>
                                 <input type="text" id="sala" name="sala" value="<%= equipamento ? (equipamento.sala || '') : '' %>">
@@ -82,14 +82,8 @@
                                     <option value="G" <%= equipamento && equipamento.bloco === 'G' ? 'selected' : '' %>>G</option>
                                 </select>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="sub-panel">
-                        <div class="sub-panel-title">Responsabilidade</div>
-                        <div class="field-grid">
                             <div class="field">
-                                <label for="emp">Emprestimo</label>
+                                <label for="emp">Responsável</label>
                                 <input type="text" id="emp" name="emp" value="<%= equipamento ? (equipamento.emp || '') : '' %>">
                             </div>
                         </div>

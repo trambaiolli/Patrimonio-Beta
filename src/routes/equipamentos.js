@@ -309,7 +309,7 @@ router.get('/exportar', async (req, res) => {
         const [equipamentos] = await db.query('SELECT * FROM equipamentos ORDER BY ni');
 
         // Criar CSV
-        let csv = 'NI,TAG,Descrição,Sala,Local,Bloco,Empresa,Observações\n';
+        let csv = 'NI,TAG,Descrição,Sala,Local,Bloco,Responsável,Observações\n';
         
         equipamentos.forEach(equip => {
             csv += `"${equip.ni}","${equip.tag}","${equip.descricao}",`;
@@ -342,7 +342,7 @@ router.get('/exportar-excel', async (req, res) => {
             Sala: equip.sala || '',
             Local: equip.local || '',
             Bloco: equip.bloco || '',
-            Empréstimo: equip.emp || '',
+            Responsável: equip.emp || '',
             Observações: equip.obs || ''
         }));
 

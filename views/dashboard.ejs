@@ -124,7 +124,7 @@
                                         <td><%= equip.sala || '-' %></td>
                                         <td><%= equip.emp || '-' %></td>
                                         <td class="actions">
-                                            <a href="/equipamentos/visualizar/<%= equip.ni %>" class="btn btn-sm btn-info">Ver</a>
+                                            <a href="/equipamentos/visualizar/<%= encodeURIComponent(equip.ni) %>" class="btn btn-sm btn-info">Ver</a>
                                         </td>
                                     </tr>
                                 <% }) %>

@@ -6,7 +6,7 @@
     <title>Equipamentos - Sistema de Patrimônio</title>
     <link rel="stylesheet" href="/style.css">
 </head>
-<body class="app-shell">
+<body class="app-shell equipamentos-page">
     <%- include('../partials/header', { activePage: 'equipamentos', username }) %>
 
     <main class="content-area">
@@ -68,7 +68,7 @@
                     </div>
 
                     <div class="field">
-                        <label for="empresa">Emprestimo</label>
+                        <label for="empresa">Responsável</label>
                         <select name="empresa" id="empresa">
                             <option value="">Todas</option>
                             <% empresas.forEach(e => { %>
@@ -104,7 +104,7 @@
                                     <th>Sala</th>
                                     <th>Local</th>
                                     <th>Bloco</th>
-                                    <th>Emprestimo</th>
+                                    <th>Responsável</th>
                                     <th>Observações</th>
                                     <th>Ações</th>
                                 </tr>
@@ -121,9 +121,9 @@
                                         <td><%= equip.emp || '-' %></td>
                                         <td><%= equip.obs || '-' %></td>
                                         <td class="actions">
-                                            <a href="/equipamentos/visualizar/<%= equip.ni %>" class="btn btn-sm btn-info" title="Visualizar">👁️</a>
-                                            <a href="/equipamentos/editar/<%= equip.ni %>" class="btn btn-sm btn-secondary" title="Editar">✏️</a>
-                                            <a href="/equipamentos/imprimir/<%= equip.ni %>" class="btn btn-sm btn-warning" title="Imprimir Etiqueta" target="_blank">🖨️</a>
+                                            <a href="/equipamentos/visualizar/<%= encodeURIComponent(equip.ni) %>" class="btn btn-sm btn-info" title="Visualizar">👁️</a>
+                                            <a href="/equipamentos/editar/<%= encodeURIComponent(equip.ni) %>" class="btn btn-sm btn-secondary" title="Editar">✏️</a>
+                                            <a href="/equipamentos/imprimir/<%= encodeURIComponent(equip.ni) %>" class="btn btn-sm btn-warning" title="Imprimir Etiqueta" target="_blank">🖨️</a>
                                         </td>
                                     </tr>
                                 <% }) %>

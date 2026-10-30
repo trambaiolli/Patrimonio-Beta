@@ -20,8 +20,8 @@
                     </div>
                     <div class="header-actions">
                         <a href="/equipamentos" class="btn btn-secondary">← Voltar</a>
-                        <a href="/equipamentos/editar/<%= equipamento.ni %>" class="btn btn-primary">✏️ Editar</a>
-                        <a href="/equipamentos/imprimir/<%= equipamento.ni %>" class="btn btn-warning" target="_blank">🖨️ Etiqueta</a>
+                        <a href="/equipamentos/editar/<%= encodeURIComponent(equipamento.ni) %>" class="btn btn-primary">✏️ Editar</a>
+                        <a href="/equipamentos/imprimir/<%= encodeURIComponent(equipamento.ni) %>" class="btn btn-warning" target="_blank">🖨️ Etiqueta</a>
                     </div>
                 </div>
 
@@ -44,8 +44,8 @@
                 </div>
 
                 <div class="sub-panel">
-                    <div class="sub-panel-title">Localização</div>
-                    <div class="field-grid">
+                    <div class="sub-panel-title">Localização e responsabilidade</div>
+                    <div class="field-grid location-responsibility-grid">
                         <div class="field">
                             <label>Sala</label>
                             <input type="text" value="<%= equipamento.sala || 'Não informado' %>" readonly class="readonly">
@@ -58,14 +58,8 @@
                             <label>Bloco</label>
                             <input type="text" value="<%= equipamento.bloco || 'Não informado' %>" readonly class="readonly">
                         </div>
-                    </div>
-                </div>
-
-                <div class="sub-panel">
-                    <div class="sub-panel-title">Responsabilidade</div>
-                    <div class="field-grid">
                         <div class="field">
-                            <label>Emprestimo</label>
+                            <label>Responsável</label>
                             <input type="text" value="<%= equipamento.emp || 'Não informado' %>" readonly class="readonly">
                         </div>
                     </div>
@@ -80,9 +74,9 @@
                 </div>
 
                 <div class="detail-actions">
-                    <a href="/equipamentos/editar/<%= equipamento.ni %>" class="btn btn-primary">Editar equipamento</a>
+                    <a href="/equipamentos/editar/<%= encodeURIComponent(equipamento.ni) %>" class="btn btn-primary">Editar equipamento</a>
                     <a href="/equipamentos" class="btn btn-secondary">Voltar à lista</a>
-                    <form method="POST" action="/equipamentos/excluir/<%= equipamento.ni %>" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir este equipamento?\n\nNI: <%= equipamento.ni %>\nDescrição: <%= equipamento.descricao %>');">
+                    <form method="POST" action="/equipamentos/excluir/<%= encodeURIComponent(equipamento.ni) %>" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir este equipamento?\n\nNI: <%= equipamento.ni %>\nDescrição: <%= equipamento.descricao %>');">
                         <button type="submit" class="btn btn-danger">Excluir equipamento</button>
                     </form>
                 </div>
