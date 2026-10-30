@@ -16,14 +16,14 @@
                 <div class="page-header">
                     <div>
                         <div class="section-title">Gerenciamento de equipamentos</div>
-                        <p class="section-subtitle">Filtre por NI, TAG, salas ou Empresa para localizar o patrimônio desejado.</p>
+                        <p class="section-subtitle">Filtre por NI, TAG, salas ou Responsável para localizar o patrimônio desejado.</p>
                     </div>
                     <div class="header-actions">
                         <% 
                         const printUrl = '/equipamentos/imprimir-lista?' + 
                             (search ? 'search=' + encodeURIComponent(search) + '&' : '') +
                             (sala ? 'sala=' + encodeURIComponent(sala) + '&' : '') +
-                            (empresa ? 'empresa=' + encodeURIComponent(empresa) : '');
+                            (responsavel ? 'responsavel=' + encodeURIComponent(responsavel) : '');
                         %>
                         <a href="<%= printUrl %>" class="btn btn-warning" target="_blank" title="Imprimir resultados filtrados">🖨️ Lista filtrada</a>
                         <a href="/equipamentos/exportar" class="btn btn-secondary" title="Exportar para CSV">📊 Exportar CSV</a>
@@ -68,13 +68,15 @@
                     </div>
 
                     <div class="field">
-                        <label for="empresa">Responsável</label>
-                        <select name="empresa" id="empresa">
-                            <option value="">Todas</option>
-                            <% empresas.forEach(e => { %>
-                                <option value="<%= e %>" <%= empresa === e ? 'selected' : '' %>><%= e %></option>
-                            <% }); %>
-                        </select>
+                        <label for="responsavel">Responsável</label>
+                        <input
+                            type="text"
+                            id="responsavel"
+                            name="responsavel"
+                            placeholder="Digite o responsável"
+                            value="<%= responsavel %>"
+                            class="search-input"
+                        >
                     </div>
 
                     <div class="actions filters-actions">

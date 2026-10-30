@@ -111,7 +111,7 @@ router.get('/', async (req, res) => {
     try {
         const search = req.query.search || '';
         const sala = req.query.sala || '';
-        const empresa = req.query.empresa || '';
+        const responsavel = req.query.responsavel || req.query.empresa || '';
         
         let query = 'SELECT * FROM equipamentos WHERE 1=1';
         const params = [];
@@ -129,19 +129,18 @@ router.get('/', async (req, res) => {
             params.push(sala);
         }
 
-        // Filtro por empresa
-        if (empresa) {
-            query += ' AND emp = ?';
-            params.push(empresa);
+        // Filtro por responsável
+        if (responsavel) {
+            query += ' AND emp LIKE ?';
+            params.push(`%${responsavel}%`);
         }
 
         query += ' ORDER BY ni';
 
         const [equipamentos] = await db.query(query, params);
 
-        // Buscar salas e empresas únicos para os filtros
+        // Buscar salas únicas para os filtros
         const [salas] = await db.query('SELECT DISTINCT sala FROM equipamentos WHERE sala IS NOT NULL ORDER BY sala');
-        const [empresas] = await db.query('SELECT DISTINCT emp FROM equipamentos WHERE emp IS NOT NULL ORDER BY emp');
 
         res.render('equipamentos/lista', {
             equipamentos,
@@ -150,9 +149,8 @@ router.get('/', async (req, res) => {
             messageType: req.query.type || null,
             search,
             sala,
-            empresa,
-            salas: salas.map(s => s.sala),
-            empresas: empresas.map(e => e.emp)
+            responsavel,
+            salas: salas.map(s => s.sala)
         });
     } catch (error) {
         console.error('Erro ao listar equipamentos:', error);
@@ -492,7 +490,7 @@ router.get('/imprimir-lista', async (req, res) => {
     try {
         const search = req.query.search || '';
         const sala = req.query.sala || '';
-        const empresa = req.query.empresa || '';
+        const responsavel = req.query.responsavel || req.query.empresa || '';
         
         let query = 'SELECT * FROM equipamentos WHERE 1=1';
         const params = [];
@@ -509,9 +507,9 @@ router.get('/imprimir-lista', async (req, res) => {
             params.push(sala);
         }
 
-        if (empresa) {
-            query += ' AND emp = ?';
-            params.push(empresa);
+        if (responsavel) {
+            query += ' AND emp LIKE ?';
+            params.push(`%${responsavel}%`);
         }
 
         query += ' ORDER BY ni';
@@ -522,7 +520,7 @@ router.get('/imprimir-lista', async (req, res) => {
             equipamentos,
             search,
             sala,
-            empresa,
+            responsavel,
             dataImpressao: new Date().toLocaleString('pt-BR')
         });
     } catch (error) {

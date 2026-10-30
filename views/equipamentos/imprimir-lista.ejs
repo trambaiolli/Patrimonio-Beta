@@ -265,7 +265,7 @@
         </div>
 
         <!-- Informações de Filtros -->
-        <% if (search || sala || empresa) { %>
+        <% if (search || sala || responsavel) { %>
         <div class="filter-info">
             <h3>🔍 Filtros Aplicados:</h3>
             <% if (search) { %>
@@ -280,10 +280,10 @@
                     <span class="filter-value"><%= sala %></span>
                 </div>
             <% } %>
-            <% if (empresa) { %>
+            <% if (responsavel) { %>
                 <div class="filter-item">
-                    <span class="filter-label">Empresa:</span>
-                    <span class="filter-value"><%= empresa %></span>
+                    <span class="filter-label">Responsável:</span>
+                    <span class="filter-value"><%= responsavel %></span>
                 </div>
             <% } %>
         </div>
