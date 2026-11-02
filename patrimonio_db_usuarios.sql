@@ -29,7 +29,7 @@ CREATE TABLE `usuarios` (
   `role` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'admin',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'admin','$2b$10$mZ23wz93DWn8/gbcFZS4gucHXV/W8nIH6FPeG/DDaHuozcfza2euK','admin'),(2,'visitante','$2b$10$gkcPcW2fs/c1SapUwzNese/H1KKB7wH0qvV2sLX0PeCPbHpa.DAd.','visitante');
+INSERT INTO `usuarios` VALUES (1,'admin','$2b$10$sdp2VDyOnbrLcWQxGP2GjeCeQnh4f.xUcvaVky2OQSgESlFeIzekW','admin'),(2,'visitante','$2b$10$gkcPcW2fs/c1SapUwzNese/H1KKB7wH0qvV2sLX0PeCPbHpa.DAd.','visitante'),(3,'instrutor','$2b$10$VU1IAip2WqEghZXMZxayiu/IDOiPIK2M5/9NkwM8eSO9.XTNld0AS','admin');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
