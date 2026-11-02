@@ -79,6 +79,20 @@ a:hover {
     gap: 12px;
 }
 
+.brand-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: inherit;
+    text-decoration: none;
+}
+
+.brand-logo {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
 .brand-block {
     display: flex;
     flex-direction: column;

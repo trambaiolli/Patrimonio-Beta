@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Sistema de Patrimônio">
+  <rect width="64" height="64" rx="14" fill="#1e2d3f"/>
+  <!-- cubo isométrico -->
+  <path d="M32 10 L51 20.5 L32 31 L13 20.5 Z" fill="#7fb4f3"/>
+  <path d="M13 20.5 L32 31 L32 53 L13 42.5 Z" fill="#4c8ad9"/>
+  <path d="M51 20.5 L32 31 L32 53 L51 42.5 Z" fill="#3b5d88"/>
+  <!-- selo de verificação -->
+  <circle cx="46" cy="46" r="10" fill="#2f9c5c" stroke="#1e2d3f" stroke-width="3"/>
+  <path d="M41.5 46.2 L44.8 49.5 L50.5 43" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
