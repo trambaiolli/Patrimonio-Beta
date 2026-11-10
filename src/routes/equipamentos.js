@@ -7,6 +7,29 @@ const path = require('path');
 const fs = require('fs');
 const XLSX = require('xlsx');
 
+function buildFilterQuery(source = {}) {
+  const filters = source.filterQuery
+    ? Object.fromEntries(new URLSearchParams(source.filterQuery))
+    : source;
+  const params = new URLSearchParams();
+
+  for (const key of ['search', 'sala']) {
+    if (filters[key]) params.set(key, filters[key]);
+  }
+
+  const responsavel = filters.responsavel || filters.empresa;
+  if (responsavel) params.set('responsavel', responsavel);
+
+  return params.toString();
+}
+
+function equipmentListUrl(source, message, type) {
+  const params = new URLSearchParams(buildFilterQuery(source));
+  params.set('message', message);
+  params.set('type', type);
+  return `/equipamentos?${params.toString()}`;
+}
+
 // Configurar multer para upload de arquivos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -161,6 +184,7 @@ router.get('/', async (req, res) => {
       search,
       sala,
       responsavel,
+      filterQuery: buildFilterQuery(req.query),
       salas: salas.map((s) => s.sala),
     });
   } catch (error) {
@@ -187,6 +211,7 @@ router.get('/visualizar/:ni', async (req, res) => {
     res.render('equipamentos/visualizar', {
       equipamento: rows[0],
       username: req.session.username,
+      filterQuery: buildFilterQuery(req.query),
     });
   } catch (error) {
     console.error('Erro ao buscar equipamento:', error);
@@ -200,6 +225,7 @@ router.get('/novo', (req, res) => {
     equipamento: null,
     username: req.session.username,
     error: null,
+    filterQuery: buildFilterQuery(req.query),
   });
 });
 
@@ -214,6 +240,7 @@ router.post('/', async (req, res) => {
         equipamento: req.body,
         username: req.session.username,
         error: 'NI, TAG e Descrição são obrigatórios',
+        filterQuery: buildFilterQuery(req.body),
       });
     }
 
@@ -233,7 +260,7 @@ router.post('/', async (req, res) => {
     );
 
     res.redirect(
-      '/equipamentos?message=Equipamento criado com sucesso&type=success'
+      equipmentListUrl(req.body, 'Equipamento criado com sucesso', 'success')
     );
   } catch (error) {
     console.error('Erro ao criar equipamento:', error);
@@ -243,6 +270,7 @@ router.post('/', async (req, res) => {
         equipamento: req.body,
         username: req.session.username,
         error: 'Já existe um equipamento com este NI',
+        filterQuery: buildFilterQuery(req.body),
       });
     }
 
@@ -250,6 +278,7 @@ router.post('/', async (req, res) => {
       equipamento: req.body,
       username: req.session.username,
       error: 'Erro ao criar equipamento',
+      filterQuery: buildFilterQuery(req.body),
     });
   }
 });
@@ -273,6 +302,7 @@ router.get('/editar/:ni', async (req, res) => {
       equipamento: rows[0],
       username: req.session.username,
       error: null,
+      filterQuery: buildFilterQuery(req.query),
     });
   } catch (error) {
     console.error('Erro ao buscar equipamento:', error);
@@ -295,6 +325,7 @@ router.post('/editar/:ni', async (req, res) => {
         equipamento: { ni, ...req.body },
         username: req.session.username,
         error: 'TAG e Descrição são obrigatórios',
+        filterQuery: buildFilterQuery(req.body),
       });
     }
 
@@ -315,17 +346,21 @@ router.post('/editar/:ni', async (req, res) => {
 
     if (result.affectedRows === 0) {
       return res.redirect(
-        '/equipamentos?message=Equipamento não encontrado&type=error'
+        equipmentListUrl(req.body, 'Equipamento não encontrado', 'error')
       );
     }
 
     res.redirect(
-      '/equipamentos?message=Equipamento atualizado com sucesso&type=success'
+      equipmentListUrl(
+        req.body,
+        'Equipamento atualizado com sucesso',
+        'success'
+      )
     );
   } catch (error) {
     console.error('Erro ao atualizar equipamento:', error);
     res.redirect(
-      '/equipamentos?message=Erro ao atualizar equipamento&type=error'
+      equipmentListUrl(req.body, 'Erro ao atualizar equipamento', 'error')
     );
   }
 });
@@ -341,17 +376,17 @@ router.post('/excluir/:ni', async (req, res) => {
 
     if (result.affectedRows === 0) {
       return res.redirect(
-        '/equipamentos?message=Equipamento não encontrado&type=error'
+        equipmentListUrl(req.body, 'Equipamento não encontrado', 'error')
       );
     }
 
     res.redirect(
-      '/equipamentos?message=Equipamento excluído com sucesso&type=success'
+      equipmentListUrl(req.body, 'Equipamento excluído com sucesso', 'success')
     );
   } catch (error) {
     console.error('Erro ao excluir equipamento:', error);
     res.redirect(
-      '/equipamentos?message=Erro ao excluir equipamento&type=error'
+      equipmentListUrl(req.body, 'Erro ao excluir equipamento', 'error')
     );
   }
 });

@@ -30,7 +30,7 @@
                         <a href="/equipamentos/exportar-excel" class="btn btn-secondary" title="Exportar para Excel">📗 Exportar Excel</a>
                         <% if (!isViewer) { %>
                         <a href="/equipamentos/importar" class="btn btn-secondary" title="Importar de CSV ou Excel">📥 Importar CSV/Excel</a>
-                        <a href="/equipamentos/novo" class="btn btn-primary">+ Novo Equipamento</a>
+                        <a href="/equipamentos/novo<%= filterQuery ? '?' + filterQuery : '' %>" class="btn btn-primary">+ Novo Equipamento</a>
                         <% } %>
                     </div>
                 </div>
@@ -118,8 +118,8 @@
                             <tbody>
                                 <% equipamentos.forEach(equip => { %>
                                     <tr>
-                                        <td><strong><%= equip.ni %></strong></td>
-                                        <td><%= equip.tag %></td>
+                                        <td class="<%= filterQuery ? 'filtered-identifier' : '' %>"><strong><%= equip.ni %></strong></td>
+                                        <td class="<%= filterQuery ? 'filtered-identifier' : '' %>"><%= equip.tag %></td>
                                         <td><%= equip.descricao %></td>
                                         <td><%= equip.sala || '-' %></td>
                                         <td><%= equip.local || '-' %></td>
@@ -127,9 +127,9 @@
                                         <td><%= equip.emp || '-' %></td>
                                         <td><%= equip.obs || '-' %></td>
                                         <td class="actions">
-                                            <a href="/equipamentos/visualizar/<%= encodeURIComponent(equip.ni) %>" class="btn btn-sm btn-info" title="Visualizar">👁️</a>
+                                            <a href="/equipamentos/visualizar/<%= encodeURIComponent(equip.ni) %><%= filterQuery ? '?' + filterQuery : '' %>" class="btn btn-sm btn-info" title="Visualizar">👁️</a>
                                             <% if (!isViewer) { %>
-                                            <a href="/equipamentos/editar/<%= encodeURIComponent(equip.ni) %>" class="btn btn-sm btn-secondary" title="Editar">✏️</a>
+                                            <a href="/equipamentos/editar/<%= encodeURIComponent(equip.ni) %><%= filterQuery ? '?' + filterQuery : '' %>" class="btn btn-sm btn-secondary" title="Editar">✏️</a>
                                             <% } %>
                                             <a href="/equipamentos/imprimir/<%= encodeURIComponent(equip.ni) %>" class="btn btn-sm btn-warning" title="Imprimir Etiqueta" target="_blank">🖨️</a>
                                         </td>

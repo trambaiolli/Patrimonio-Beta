@@ -18,7 +18,7 @@
                         <div class="section-title"><%= equipamento ? 'Editar equipamento' : 'Novo equipamento' %></div>
                         <p class="section-subtitle">Preencha os campos abaixo para manter o controle alinhado ao modelo visual solicitado.</p>
                     </div>
-                    <a href="/equipamentos" class="btn btn-secondary">← Voltar</a>
+                    <a href="/equipamentos<%= filterQuery ? '?' + filterQuery : '' %>" class="btn btn-secondary">← Voltar</a>
                 </div>
 
                 <% if (error) { %>
@@ -28,6 +28,7 @@
                 <% } %>
 
                 <form method="POST" action="<%= equipamento ? '/equipamentos/editar/' + encodeURIComponent(equipamento.ni) : '/equipamentos' %>">
+                    <input type="hidden" name="filterQuery" value="<%= filterQuery %>">
                     <div class="sub-panel">
                         <div class="sub-panel-title">Identificação</div>
                         <div class="field-grid">
@@ -104,7 +105,7 @@
                         <% if (equipamento) { %>
                             <button type="button" id="btnEnviarEmail" class="btn btn-secondary">📧 Enviar por e-mail</button>
                         <% } %>
-                        <a href="/equipamentos" class="btn btn-secondary">Cancelar</a>
+                        <a href="/equipamentos<%= filterQuery ? '?' + filterQuery : '' %>" class="btn btn-secondary">Cancelar</a>
                     </div>
 
                     <p class="form-note">Campos marcados com * são obrigatórios.</p>

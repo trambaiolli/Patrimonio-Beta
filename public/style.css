@@ -1297,6 +1297,10 @@ tbody tr:nth-child(even) td {
     padding: 12px 10px;
 }
 
+.equipamentos-page td.filtered-identifier {
+    font-size: 1.26rem;
+}
+
 .equipamentos-page thead th {
     padding: 10px;
 }

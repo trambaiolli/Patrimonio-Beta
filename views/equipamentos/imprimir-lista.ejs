@@ -118,6 +118,11 @@
             vertical-align: top;
         }
 
+        .filtered-results .ni-col,
+        .filtered-results .tag-col {
+            font-size: 1.071rem;
+        }
+
         table tbody tr:nth-child(even) {
             background-color: #f6f8fc;
         }
@@ -310,7 +315,7 @@
             </div>
         <% } else { %>
             <div class="table-container">
-                <table>
+                <table class="<%= search || sala || responsavel ? 'filtered-results' : '' %>">
                     <thead>
                         <tr>
                             <th style="width: 80px;">NI</th>

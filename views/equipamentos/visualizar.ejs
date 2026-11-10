@@ -19,9 +19,9 @@
                         <p class="section-subtitle">Visualização alinhada ao novo padrão cinza/azul do sistema.</p>
                     </div>
                     <div class="header-actions">
-                        <a href="/equipamentos" class="btn btn-secondary">← Voltar</a>
+                        <a href="/equipamentos<%= filterQuery ? '?' + filterQuery : '' %>" class="btn btn-secondary">← Voltar</a>
                         <% if (!isViewer) { %>
-                        <a href="/equipamentos/editar/<%= encodeURIComponent(equipamento.ni) %>" class="btn btn-primary">✏️ Editar</a>
+                        <a href="/equipamentos/editar/<%= encodeURIComponent(equipamento.ni) %><%= filterQuery ? '?' + filterQuery : '' %>" class="btn btn-primary">✏️ Editar</a>
                         <% } %>
                         <a href="/equipamentos/imprimir/<%= encodeURIComponent(equipamento.ni) %>" class="btn btn-warning" target="_blank">🖨️ Etiqueta</a>
                     </div>
@@ -77,11 +77,12 @@
 
                 <div class="detail-actions">
                     <% if (!isViewer) { %>
-                    <a href="/equipamentos/editar/<%= encodeURIComponent(equipamento.ni) %>" class="btn btn-primary">Editar equipamento</a>
+                    <a href="/equipamentos/editar/<%= encodeURIComponent(equipamento.ni) %><%= filterQuery ? '?' + filterQuery : '' %>" class="btn btn-primary">Editar equipamento</a>
                     <% } %>
-                    <a href="/equipamentos" class="btn btn-secondary">Voltar à lista</a>
+                    <a href="/equipamentos<%= filterQuery ? '?' + filterQuery : '' %>" class="btn btn-secondary">Voltar à lista</a>
                     <% if (!isViewer) { %>
                     <form method="POST" action="/equipamentos/excluir/<%= encodeURIComponent(equipamento.ni) %>" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir este equipamento?\n\nNI: <%= equipamento.ni %>\nDescrição: <%= equipamento.descricao %>');">
+                        <input type="hidden" name="filterQuery" value="<%= filterQuery %>">
                         <button type="submit" class="btn btn-danger">Excluir equipamento</button>
                     </form>
                     <% } %>
