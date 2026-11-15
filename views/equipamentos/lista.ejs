@@ -127,7 +127,6 @@
                                         <td><%= equip.emp || '-' %></td>
                                         <td><%= equip.obs || '-' %></td>
                                         <td class="actions">
-                                            <a href="/equipamentos/visualizar/<%= encodeURIComponent(equip.ni) %><%= filterQuery ? '?' + filterQuery : '' %>" class="btn btn-sm btn-info" title="Visualizar">👁️</a>
                                             <% if (!isViewer) { %>
                                             <a href="/equipamentos/editar/<%= encodeURIComponent(equip.ni) %><%= filterQuery ? '?' + filterQuery : '' %>" class="btn btn-sm btn-secondary" title="Editar">✏️</a>
                                             <% } %>
