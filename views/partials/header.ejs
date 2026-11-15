@@ -3,21 +3,18 @@
         <a href="/dashboard" class="brand-link">
             <img src="/logo.svg" alt="Logo Sistema de Patrimônio" class="brand-logo">
             <div class="brand-block">
-                <span class="brand-eyebrow">Gestão Patrimonial</span>
-                <h1>Sistema de Patrimônio</h1>
+                <span class="brand-eyebrow">Gestão patrimonial</span>
+                <strong class="brand-title">Sistema de Patrimônio</strong>
             </div>
         </a>
         <div class="nav-meta">
-            <nav class="nav-links">
-                <a href="/dashboard" class="<%= activePage === 'dashboard' ? 'is-active' : '' %>">Dashboard</a>
-                <a href="/equipamentos" class="<%= ['equipamentos', 'form', 'importar', 'detalhes'].includes(activePage) ? 'is-active' : '' %>">Equipamentos</a>
+            <nav class="nav-links" aria-label="Navegação principal">
+                <a href="/dashboard" class="<%= activePage === 'dashboard' ? 'is-active' : '' %>" <%= activePage === 'dashboard' ? 'aria-current="page"' : '' %>>Visão geral</a>
+                <a href="/equipamentos" class="<%= ['equipamentos', 'form', 'importar', 'detalhes'].includes(activePage) ? 'is-active' : '' %>" <%= ['equipamentos', 'form', 'importar', 'detalhes'].includes(activePage) ? 'aria-current="page"' : '' %>>Equipamentos</a>
             </nav>
             <% if (typeof username !== 'undefined' && username) { %>
             <div class="user-meta">
-                <span class="user-chip">
-                    <small>Usuário</small>
-                    <strong><%= username %></strong>
-                </span>
+                <span class="user-name"><%= username %></span>
                 <a href="/logout" class="btn btn-ghost">Sair</a>
             </div>
             <% } %>
