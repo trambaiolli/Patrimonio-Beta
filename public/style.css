@@ -1683,6 +1683,19 @@ tbody tr:last-child td {
     border-bottom: 0;
 }
 
+.equipment-row {
+    cursor: pointer;
+}
+
+.equipment-row:hover td {
+    background: #f0f7f3;
+}
+
+.equipment-row:focus-visible {
+    outline: 2px solid var(--accent-strong);
+    outline-offset: -2px;
+}
+
 .stats-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;

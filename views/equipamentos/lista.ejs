@@ -117,7 +117,7 @@
                             </thead>
                             <tbody>
                                 <% equipamentos.forEach(equip => { %>
-                                    <tr>
+                                    <tr class="equipment-row" data-href="/equipamentos/visualizar/<%= encodeURIComponent(equip.ni) %>" tabindex="0" role="link" aria-label="Visualizar equipamento NI <%= equip.ni %>">
                                         <td class="<%= filterQuery ? 'filtered-identifier' : '' %>"><strong><%= equip.ni %></strong></td>
                                         <td class="<%= filterQuery ? 'filtered-identifier' : '' %>"><%= equip.tag %></td>
                                         <td><%= equip.descricao %></td>
@@ -146,5 +146,17 @@
     </main>
 
     <%- include('../partials/footer') %>
+    <script>
+        document.querySelectorAll('.equipment-row').forEach((row) => {
+            row.addEventListener('click', (event) => {
+                if (event.target.closest('a, button, input, select, textarea')) return;
+                window.location.href = row.dataset.href;
+            });
+
+            row.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') window.location.href = row.dataset.href;
+            });
+        });
+    </script>
 </body>
 </html>
