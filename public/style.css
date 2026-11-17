@@ -462,10 +462,11 @@ a:hover {
 }
 
 .filters-actions {
-    display: inline-flex;
-    gap: 12px;
-    justify-self: flex-end;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
     align-items: center;
+    justify-content: flex-end;
 }
 
 .filters-actions .btn {
@@ -483,11 +484,21 @@ a:hover {
         grid-template-columns: 1fr;
     }
 
+    .equipamentos-page .filter-panel-heading {
+        flex-wrap: wrap;
+    }
+
+    .equipamentos-page .filter-panel-heading .filters-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
     .filters-actions {
+        grid-column: 1 / -1;
         width: 100%;
         justify-self: stretch;
         flex-wrap: wrap;
-        justify-content: flex-start;
+        justify-content: flex-end;
     }
 }
 
@@ -1239,6 +1250,21 @@ tbody tr:nth-child(even) td {
     gap: 14px;
 }
 
+.equipamentos-page .app-header .header-grid {
+    gap: 12px;
+}
+
+.equipamentos-page .equipment-toolbar {
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.equipamentos-page .equipment-toolbar .header-actions {
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
 .equipamentos-page .panel-heading-compact {
     padding: 10px 18px;
     font-size: 0.82rem;
@@ -1275,6 +1301,16 @@ tbody tr:nth-child(even) td {
 .equipamentos-page .filters-form {
     padding: 12px;
     gap: 10px;
+}
+
+.equipamentos-page .filter-panel-heading .filters-actions {
+    display: flex;
+    width: auto;
+    grid-column: auto;
+    justify-self: auto;
+    justify-content: flex-end;
+    gap: 6px;
+    flex-wrap: nowrap;
 }
 
 .equipamentos-page .field {
@@ -1820,6 +1856,25 @@ tbody tr:last-child td {
         gap: 10px;
     }
 
+    .equipamentos-page .app-header .nav-meta {
+        order: 2;
+    }
+
+    .equipamentos-page .equipment-toolbar {
+        order: 3;
+        width: 100%;
+    }
+
+    .equipamentos-page .equipment-toolbar .header-actions {
+        width: 100%;
+        flex-direction: row;
+    }
+
+    .equipamentos-page .equipment-toolbar .btn {
+        width: auto;
+        flex: 1 1 145px;
+    }
+
     .user-meta {
         width: auto;
         padding-left: 10px;
@@ -1895,11 +1950,11 @@ tbody tr:last-child td {
     }
 
     .filters-actions {
-        justify-content: stretch;
+        justify-content: flex-end;
     }
 
     .filters-actions .btn {
-        flex: 1;
+        flex: 0 0 auto;
         width: auto;
     }
 }
