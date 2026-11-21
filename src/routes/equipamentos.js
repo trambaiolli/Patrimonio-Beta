@@ -144,32 +144,37 @@ router.get('/', async (req, res) => {
     const search = req.query.search || '';
     const sala = req.query.sala || '';
     const responsavel = req.query.responsavel || req.query.empresa || '';
+    const filterQuery = buildFilterQuery(req.query);
 
-    let query = 'SELECT * FROM equipamentos WHERE 1=1';
-    const params = [];
+    let equipamentos = [];
 
-    // Busca geral (NI, TAG, Descrição)
-    if (search) {
-      query += ' AND (ni LIKE ? OR tag LIKE ? OR descricao LIKE ?)';
-      const searchTerm = `%${search}%`;
-      params.push(searchTerm, searchTerm, searchTerm);
+    if (filterQuery) {
+      let query = 'SELECT * FROM equipamentos WHERE 1=1';
+      const params = [];
+
+      // Busca geral (NI, TAG, Descrição)
+      if (search) {
+        query += ' AND (ni LIKE ? OR tag LIKE ? OR descricao LIKE ?)';
+        const searchTerm = `%${search}%`;
+        params.push(searchTerm, searchTerm, searchTerm);
+      }
+
+      // Filtro por sala
+      if (sala) {
+        query += ' AND sala = ?';
+        params.push(sala);
+      }
+
+      // Filtro por responsável
+      if (responsavel) {
+        query += ' AND emp LIKE ?';
+        params.push(`%${responsavel}%`);
+      }
+
+      query += ' ORDER BY ni';
+
+      [equipamentos] = await db.query(query, params);
     }
-
-    // Filtro por sala
-    if (sala) {
-      query += ' AND sala = ?';
-      params.push(sala);
-    }
-
-    // Filtro por responsável
-    if (responsavel) {
-      query += ' AND emp LIKE ?';
-      params.push(`%${responsavel}%`);
-    }
-
-    query += ' ORDER BY ni';
-
-    const [equipamentos] = await db.query(query, params);
 
     // Buscar salas únicas para os filtros
     const [salas] = await db.query(
@@ -184,7 +189,7 @@ router.get('/', async (req, res) => {
       search,
       sala,
       responsavel,
-      filterQuery: buildFilterQuery(req.query),
+      filterQuery,
       salas: salas.map((s) => s.sala),
     });
   } catch (error) {

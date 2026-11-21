@@ -85,8 +85,8 @@
             <div class="panel-body">
                 <% if (equipamentos.length === 0) { %>
                     <div class="empty-state">
-                        <p>Nenhum equipamento corresponde aos filtros atuais.</p>
-                        <% if (!isViewer) { %>
+                        <p><%= filterQuery ? 'Nenhum equipamento corresponde aos filtros atuais.' : 'Use os filtros acima para consultar os equipamentos.' %></p>
+                        <% if (filterQuery && !isViewer) { %>
                         <a href="/equipamentos/novo" class="btn btn-primary">Cadastrar primeiro equipamento</a>
                         <% } %>
                     </div>
@@ -108,7 +108,7 @@
                             </thead>
                             <tbody>
                                 <% equipamentos.forEach(equip => { %>
-                                    <tr class="equipment-row" data-href="/equipamentos/visualizar/<%= encodeURIComponent(equip.ni) %>" tabindex="0" role="link" aria-label="Visualizar equipamento NI <%= equip.ni %>">
+                                    <tr class="equipment-row" data-href="/equipamentos/visualizar/<%= encodeURIComponent(equip.ni) %><%= filterQuery ? '?' + filterQuery : '' %>" tabindex="0" role="link" aria-label="Visualizar equipamento NI <%= equip.ni %>">
                                         <td class="<%= filterQuery ? 'filtered-identifier' : '' %>"><strong><%= equip.ni %></strong></td>
                                         <td class="<%= filterQuery ? 'filtered-identifier' : '' %>"><%= equip.tag %></td>
                                         <td><%= equip.descricao %></td>
